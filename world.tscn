@@ -2,6 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://player.tscn" id="1_f3sb7"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3sb7"]
+metallic = 1.0
+roughness = 0.45
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
@@ -15,12 +19,28 @@ sky = SubResource("Sky_fj7yv")
 
 [node name="Floor" type="CSGBox3D" parent="." unique_id=273102614]
 use_collision = true
-size = Vector3(20, 0.5, 20)
+size = Vector3(40, 0.5, 40)
 
 [node name="Wall1" type="CSGBox3D" parent="." unique_id=1838423067]
-transform = Transform3D(1, 0, 0, 0, 0.018918296, -0.999821, 0, 0.999821, 0.018918296, -0.017505646, 9.581941, 9.884669)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.061120987, 2.7106776, 20.214993)
 use_collision = true
-size = Vector3(20, 0.5, 20)
+size = Vector3(40, 0.5, 5)
+material = SubResource("StandardMaterial3D_f3sb7")
+
+[node name="Wall2" type="CSGBox3D" parent="." unique_id=1049972049]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.061120987, 2.7106776, -20.258686)
+use_collision = true
+size = Vector3(40, 0.5, 5)
+
+[node name="Wall3" type="CSGBox3D" parent="." unique_id=1681289445]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 4.371139e-08, 0, -4.3711385e-08, -1, 0.99999994, -4.3711385e-08, 1.9106855e-15, 20.15382, 2.7106776, -0.06221199)
+use_collision = true
+size = Vector3(40, 0.5, 5)
+
+[node name="Wall4" type="CSGBox3D" parent="." unique_id=1721982407]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 4.371139e-08, 0, -4.3711385e-08, -1, 0.99999994, -4.3711385e-08, 1.9106855e-15, -20.0004, 2.7106776, -0.06221199)
+use_collision = true
+size = Vector3(40, 0.5, 5)
 
 [node name="Player" parent="." unique_id=1847063785 instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4219327, 0)
