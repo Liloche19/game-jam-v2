@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="game-jam-v2"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 Avancer={

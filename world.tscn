@@ -1,10 +1,66 @@
 [gd_scene format=3 uid="uid://cnf0pua73w08e"]
 
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://player.tscn" id="1_f3sb7"]
+[ext_resource type="Material" uid="uid://6wsedqbqkteo" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG.tres" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://bfus4kgcawh7i" path="res://PaintedPlaster013_1K-JPG/Concrete044C_1K-JPG_Roughness.jpg" id="1_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://bdxli2us6j1et" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_Color.jpg" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://5qagex3rky1p" path="res://PaintedPlaster013_1K-JPG/Metal056B_1K-JPG_Color.jpg" id="4_036b0"]
+[ext_resource type="FontFile" uid="uid://cdm4qt7xqwowt" path="res://PaintedPlaster013_1K-JPG/Oswald-VariableFont_wght.ttf" id="5_dwbse"]
+[ext_resource type="Script" uid="uid://x3rdwtu17se0" path="res://ButtonTrigger.cs" id="6_gbfbk"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3sb7"]
-metallic = 1.0
-roughness = 0.45
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
+albedo_texture = ExtResource("1_tlwt5")
+uv1_scale = Vector3(6, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f3sb7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
+size = Vector3(12, 0.2, 12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tlwt5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aqk2v"]
+size = Vector3(12, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_036b0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dwbse"]
+size = Vector3(12, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pkg7o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gbfbk"]
+size = Vector3(12, 3, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqk2v"]
+albedo_texture = ExtResource("2_tlwt5")
+uv1_scale = Vector3(6, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ioo17"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wse8f"]
+size = Vector3(12, 3, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwbse"]
+albedo_texture = ExtResource("4_036b0")
+uv1_scale = Vector3(6, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fj7yv"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_f3sb7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_aqk2v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_036b0"]
+size = Vector3(12, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gbfbk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ioo17"]
+size = Vector3(1, 0.2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ic0uy"]
+size = Vector3(1, 0.1, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 
@@ -17,30 +73,111 @@ sky = SubResource("Sky_fj7yv")
 
 [node name="World" type="Node3D" unique_id=1996984688]
 
-[node name="Floor" type="CSGBox3D" parent="." unique_id=273102614]
-use_collision = true
-size = Vector3(40, 0.5, 40)
+[node name="FactoryRoom" type="Node3D" parent="." unique_id=14981674]
 
-[node name="Wall1" type="CSGBox3D" parent="." unique_id=1838423067]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.061120987, 2.7106776, 20.214993)
-use_collision = true
-size = Vector3(40, 0.5, 5)
-material = SubResource("StandardMaterial3D_f3sb7")
+[node name="Floor" type="StaticBody3D" parent="FactoryRoom" unique_id=1468721706]
 
-[node name="Wall2" type="CSGBox3D" parent="." unique_id=1049972049]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.061120987, 2.7106776, -20.258686)
-use_collision = true
-size = Vector3(40, 0.5, 5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FactoryRoom/Floor" unique_id=671902969]
+transform = Transform3D(12, 0, 0, 0, 0.2, 0, 0, 0, 12, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_036b0")
+mesh = SubResource("BoxMesh_f3sb7")
 
-[node name="Wall3" type="CSGBox3D" parent="." unique_id=1681289445]
-transform = Transform3D(-4.3711385e-08, -0.99999994, 4.371139e-08, 0, -4.3711385e-08, -1, 0.99999994, -4.3711385e-08, 1.9106855e-15, 20.15382, 2.7106776, -0.06221199)
-use_collision = true
-size = Vector3(40, 0.5, 5)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/Floor" unique_id=1798235917]
+shape = SubResource("BoxShape3D_f3sb7")
 
-[node name="Wall4" type="CSGBox3D" parent="." unique_id=1721982407]
-transform = Transform3D(-4.3711385e-08, -0.99999994, 4.371139e-08, 0, -4.3711385e-08, -1, 0.99999994, -4.3711385e-08, 1.9106855e-15, -20.0004, 2.7106776, -0.06221199)
-use_collision = true
-size = Vector3(40, 0.5, 5)
+[node name="Walls" type="Node3D" parent="FactoryRoom" unique_id=475137507]
+
+[node name="Wall_Front" type="StaticBody3D" parent="FactoryRoom/Walls" unique_id=1344085724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FactoryRoom/Walls/Wall_Front" unique_id=1904114344]
+transform = Transform3D(12, 0, 0, 0, 3, 0, 0, 0, 0.3, 0.068762064, 0.5533266, 0.029275894)
+material_override = ExtResource("1_fj7yv")
+mesh = SubResource("BoxMesh_tlwt5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/Walls/Wall_Front" unique_id=811845509]
+shape = SubResource("BoxShape3D_aqk2v")
+
+[node name="Wall_Back" type="StaticBody3D" parent="FactoryRoom/Walls" unique_id=740686593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FactoryRoom/Walls/Wall_Back" unique_id=1785494933]
+transform = Transform3D(12, 0, 0, 0, 3, 0, 0, 0, 0.3, 0.025016785, 0.173419, -0.06318092)
+material_override = ExtResource("1_fj7yv")
+mesh = SubResource("BoxMesh_036b0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/Walls/Wall_Back" unique_id=1537178994]
+shape = SubResource("BoxShape3D_dwbse")
+
+[node name="Wall_Left" type="StaticBody3D" parent="FactoryRoom/Walls" unique_id=1982440390]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6, 1.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FactoryRoom/Walls/Wall_Left" unique_id=1313744354]
+transform = Transform3D(12, 0, 0, 0, 3, 0, 0, 0, 0.3, -0.005687714, 0.122362375, 0.017145157)
+material_override = ExtResource("1_fj7yv")
+mesh = SubResource("BoxMesh_pkg7o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/Walls/Wall_Left" unique_id=1158486152]
+shape = SubResource("BoxShape3D_gbfbk")
+
+[node name="Wall_Right" type="StaticBody3D" parent="FactoryRoom/Walls" unique_id=1057302967]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6, 1.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FactoryRoom/Walls/Wall_Right" unique_id=1646620905]
+transform = Transform3D(12, 0, 0, 0, 3, 0, 0, 0, 0.3, 0.019321445, 0.108615875, -0.05740547)
+material_override = SubResource("StandardMaterial3D_aqk2v")
+mesh = SubResource("BoxMesh_ioo17")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/Walls/Wall_Right" unique_id=567570519]
+shape = SubResource("BoxShape3D_wse8f")
+
+[node name="Ceiling" type="MeshInstance3D" parent="FactoryRoom" unique_id=1292857922]
+transform = Transform3D(12, 0, 0, 0, 0.2, 0, 0, 0, 12, 0, 3.2, 0)
+material_override = SubResource("StandardMaterial3D_dwbse")
+mesh = SubResource("BoxMesh_fj7yv")
+
+[node name="FakeWall" type="StaticBody3D" parent="FactoryRoom" unique_id=962711847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0997171, 1.5, -2)
+physics_material_override = SubResource("PhysicsMaterial_f3sb7")
+
+[node name="Mesh" type="MeshInstance3D" parent="FactoryRoom/FakeWall" unique_id=885089720]
+transform = Transform3D(12, 0, 0, 0, 3, 0, 0, 0, 0.3, -1.1525502, -0.13764477, -0.7418785)
+material_override = ExtResource("1_fj7yv")
+material_overlay = ExtResource("1_fj7yv")
+mesh = SubResource("BoxMesh_aqk2v")
+
+[node name="Text" type="Label3D" parent="FactoryRoom/FakeWall" unique_id=546648778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1350374, 0.09882927, 0.01999998)
+text = "Welcome to our factory
+here there is nothing to do
+"
+font = ExtResource("5_dwbse")
+font_size = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/FakeWall" unique_id=1823969491]
+shape = SubResource("BoxShape3D_036b0")
+disabled = true
+
+[node name="HiddenArea" type="Node3D" parent="FactoryRoom" unique_id=1970355415]
+
+[node name="Button" type="StaticBody3D" parent="FactoryRoom/HiddenArea" unique_id=1201564077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -5.029274)
+
+[node name="Mesh" type="MeshInstance3D" parent="FactoryRoom/HiddenArea/Button" unique_id=913589952]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_gbfbk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/HiddenArea/Button" unique_id=1292245782]
+shape = SubResource("BoxShape3D_ioo17")
+
+[node name="TriggerTop" type="Area3D" parent="FactoryRoom/HiddenArea/Button" unique_id=1712270622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.121767044, 0, 0)
+script = ExtResource("6_gbfbk")
+FloorToDisable = NodePath("../../../Floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FactoryRoom/HiddenArea/Button/TriggerTop" unique_id=415024947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+shape = SubResource("BoxShape3D_ic0uy")
 
 [node name="Player" parent="." unique_id=1847063785 instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4219327, 0)
