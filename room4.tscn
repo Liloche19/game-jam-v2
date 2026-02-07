@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://c8cmuhblnna2s"]
+
+[ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://player.tscn" id="1_bmo2m"]
+[ext_resource type="Material" path="res://texture/Concrete036_1K-JPG.tres" id="1_h8pmr"]
+[ext_resource type="Material" path="res://Textures/Tiles/Tiles107_1K-JPG.tres" id="3_raca0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_raca0"]
+size = Vector3(20, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kdbpy"]
+size = Vector3(20, 5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kdbpy"]
+size = Vector3(20, 0, 20)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h8pmr"]
+
+[sub_resource type="Sky" id="Sky_6em4c"]
+sky_material = SubResource("ProceduralSkyMaterial_h8pmr")
+
+[sub_resource type="Environment" id="Environment_raca0"]
+background_mode = 2
+sky = SubResource("Sky_6em4c")
+
+[node name="ROOM4" type="Node3D" unique_id=1246000375]
+
+[node name="Mur" type="StaticBody3D" parent="." unique_id=1144096934]
+
+[node name="ZCollision" type="CollisionShape3D" parent="Mur" unique_id=125188543]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
+shape = SubResource("BoxShape3D_raca0")
+
+[node name="ZMesh" type="MeshInstance3D" parent="Mur" unique_id=254505174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
+material_override = ExtResource("1_h8pmr")
+mesh = SubResource("BoxMesh_kdbpy")
+
+[node name="xCollision" type="CollisionShape3D" parent="Mur" unique_id=1089955639]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 2.5, 0)
+shape = SubResource("BoxShape3D_raca0")
+
+[node name="xMesh" type="MeshInstance3D" parent="Mur" unique_id=124824528]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 2.5, 0)
+material_override = ExtResource("1_h8pmr")
+mesh = SubResource("BoxMesh_kdbpy")
+
+[node name="-xCollision" type="CollisionShape3D" parent="Mur" unique_id=1340922681]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10, 2.5, 0)
+shape = SubResource("BoxShape3D_raca0")
+
+[node name="-xMesh" type="MeshInstance3D" parent="Mur" unique_id=2033118561]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10, 2.5, 0)
+material_override = ExtResource("1_h8pmr")
+mesh = SubResource("BoxMesh_kdbpy")
+
+[node name="-ZCollision" type="CollisionShape3D" parent="Mur" unique_id=72697217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -10)
+shape = SubResource("BoxShape3D_raca0")
+
+[node name="-ZMesh" type="MeshInstance3D" parent="Mur" unique_id=165621589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -10)
+material_override = ExtResource("1_h8pmr")
+mesh = SubResource("BoxMesh_kdbpy")
+
+[node name="Floor colision" type="CollisionShape3D" parent="Mur" unique_id=661187352]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56799316, 0, -0.5040283)
+shape = SubResource("BoxShape3D_kdbpy")
+
+[node name="Player" parent="." unique_id=575900600 instance=ExtResource("1_bmo2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8550627, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1123604017]
+environment = SubResource("Environment_raca0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1826911067]
+transform = Transform3D(0.4020863, 0.5222281, -0.7520668, -0.15375094, 0.848238, 0.50680673, 0.90260035, -0.08814906, 0.42135787, 0, 10.291347, 0)
+
+[node name="Walls" type="Node3D" parent="." unique_id=1823008984]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=601232122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+size = Vector3(20, 0.5, 20)
+material = ExtResource("3_raca0")
