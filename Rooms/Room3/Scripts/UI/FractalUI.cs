@@ -35,6 +35,9 @@ namespace FractalGenerator.UI
 	// UI Elements - v Parameters (Julia)
 	private SpinBox _vRealSpinBox;
 	private SpinBox _vImagSpinBox;
+	private Button _renderButton;
+	private Label _renderHintLabel;
+	private bool _pendingCpuRender = false;
 	private bool _updatingUI = false; // Prevent feedback loops
 
 		public override void _Ready()
@@ -42,6 +45,9 @@ namespace FractalGenerator.UI
 		try
 		{
 			GD.Print("FractalUI: Starting _Ready...");
+			
+			// Allow mouse motion to pass through for camera control
+			MouseFilter = MouseFilterEnum.Pass;
 			
 			GD.Print("FractalUI: Looking for FractalRenderer...");
 			_fractalRenderer = GetTree().CurrentScene?.FindChild("FractalRenderer", true, false) as FractalRenderer;
@@ -159,6 +165,17 @@ namespace FractalGenerator.UI
 			resetButton.Pressed += OnResetPressed;
 			mainContainer.AddChild(resetButton);
 
+			// Render button (CPU mode only)
+			_renderButton = new Button { Text = "Render (CPU)" };
+			_renderButton.Pressed += OnRenderPressed;
+			mainContainer.AddChild(_renderButton);
+
+			_renderHintLabel = new Label { Text = "" };
+			mainContainer.AddChild(_renderHintLabel);
+
+			// Add the main panel to this control so it's visible
+			AddChild(mainPanel);
+
 			GD.Print("FractalUI: Updating UI from fractal...");
 			UpdateUIFromFractal();
 			GD.Print("FractalUI: _Ready complete!");
@@ -201,7 +218,7 @@ namespace FractalGenerator.UI
 			fractal.ColorShift = (float)_colorShiftSlider.Value;
 			fractal.SmoothColoring = _smoothColoringCheckBox.ButtonPressed;
 
-			_fractalRenderer.MarkForUpdate();
+			RequestRenderOrQueue();
 		}
 
 		private void OnViewChanged(double value = 0)
@@ -215,7 +232,7 @@ namespace FractalGenerator.UI
 			fractal.CenterPosition = new Math.Complex((float)_panXSpinBox.Value, (float)_panYSpinBox.Value);
 			fractal.ZoomLevel = (float)_zoomSpinBox.Value;
 
-			_fractalRenderer.MarkForUpdate();
+			RequestRenderOrQueue();
 		}
 
 		private void OnJuliaChanged(double value = 0)
@@ -226,7 +243,7 @@ namespace FractalGenerator.UI
 			if (_fractalRenderer.GetCurrentFractal() is JuliaFractal julia)
 			{
 				julia.SetVParameter((float)_vRealSpinBox.Value, (float)_vImagSpinBox.Value);
-				_fractalRenderer.MarkForUpdate();
+				RequestRenderOrQueue();
 			}
 		}
 
@@ -238,7 +255,7 @@ namespace FractalGenerator.UI
 			if (_fractalRenderer.GetCurrentFractal() is JuliaFractal julia)
 			{
 				julia.SetVParameter((float)_vRealSpinBox.Value, (float)_vImagSpinBox.Value);
-				_fractalRenderer.MarkForUpdate();
+				RequestRenderOrQueue();
 			}
 		}
 
@@ -249,9 +266,44 @@ namespace FractalGenerator.UI
 			if (fractal != null)
 			{
 				fractal.Reset();
-				_fractalRenderer.MarkForUpdate();
+				RequestRenderOrQueue();
 				UpdateUIFromFractal();
 			}
+		}
+
+		private void OnRenderPressed()
+		{
+			if (_fractalRenderer == null) return;
+			TriggerRender();
+		}
+
+		public void RequestCpuRenderFromKey()
+		{
+			if (_fractalRenderer == null) return;
+			if (_fractalRenderer.UseGPURendering) return;
+			TriggerRender();
+		}
+
+		private void TriggerRender()
+		{
+			_pendingCpuRender = false;
+			_fractalRenderer.MarkForUpdate();
+			UpdateRenderControls();
+		}
+
+		private void RequestRenderOrQueue()
+		{
+			if (_fractalRenderer == null) return;
+			if (_fractalRenderer.UseGPURendering)
+			{
+				_fractalRenderer.MarkForUpdate();
+				_pendingCpuRender = false;
+			}
+			else
+			{
+				_pendingCpuRender = true;
+			}
+			UpdateRenderControls();
 		}
 
 		/// <summary>
@@ -287,7 +339,28 @@ namespace FractalGenerator.UI
 				_vImagSpinBox.Value = julia.VParameter.Imaginary;
 			}
 
+			UpdateRenderControls();
+
 			_updatingUI = false;
+		}
+
+		private void UpdateRenderControls()
+		{
+			if (_fractalRenderer == null || _renderButton == null || _renderHintLabel == null)
+				return;
+
+			if (_fractalRenderer.UseGPURendering)
+			{
+				_renderButton.Visible = false;
+				_renderHintLabel.Text = "GPU mode: live updates";
+			}
+			else
+			{
+				_renderButton.Visible = true;
+				_renderButton.Disabled = !_pendingCpuRender;
+				_renderButton.Text = _pendingCpuRender ? "Render (CPU)" : "Render (CPU)";
+				_renderHintLabel.Text = _pendingCpuRender ? "CPU mode: click Render or press R" : "CPU mode: up to date";
+			}
 		}
 	}
 }

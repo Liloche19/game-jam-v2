@@ -61,13 +61,17 @@ namespace FractalGenerator
 			_fractalUI = new FractalUI();
 			_fractalUI.AnchorLeft = 0f;
 			_fractalUI.AnchorTop = 0f;
-			_fractalUI.AnchorRight = 0f;
+			_fractalUI.AnchorRight = 0.3f;
 			_fractalUI.AnchorBottom = 1f;
 			_fractalUI.CustomMinimumSize = new Vector2(400, 0);
 			uiLayer.AddChild(_fractalUI);
 			// Bind UI to the renderer so controls affect the correct instance
 			_fractalUI.BindRenderer(_fractalRenderer);
 			GD.Print("FractalScene: FractalUI created");
+			
+			// Show cursor for UI interaction in this room
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+			GD.Print("FractalScene: Cursor enabled");
 			
 			GD.Print("FractalScene initialization complete!");
 			}
@@ -76,6 +80,13 @@ namespace FractalGenerator
 				GD.PrintErr($"FractalScene._Ready exception: {e}");
 				GD.PrintErr($"Stack trace: {e.StackTrace}");
 			}
+		}
+
+		public override void _ExitTree()
+		{
+			// Hide cursor when leaving this room
+			Input.MouseMode = Input.MouseModeEnum.Captured;
+			GD.Print("FractalScene: Cursor disabled");
 		}
 
 		public override void _Process(double delta)
@@ -146,12 +157,18 @@ namespace FractalGenerator
 				fractal.Reset();
 				_fractalRenderer.MarkForUpdate();
 			}
+
+			if (Input.IsActionJustPressed("fractal_render_cpu"))
+			{
+				_fractalUI?.RequestCpuRenderFromKey();
+			}
 		}
 
 		private void EnsureFractalInputBindings()
 		{
 			EnsureActionBinding("fractal_zoom_in", Key.Pageup);
 			EnsureActionBinding("fractal_zoom_out", Key.Pagedown);
+			EnsureActionBinding("fractal_render_cpu", Key.R);
 		}
 
 		private void EnsureActionBinding(string actionName, Key key)
