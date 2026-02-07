@@ -1355,6 +1355,11 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1320465568]
 environment = SubResource("Environment_pbh88")
 
-[node name="Label3D" type="Label3D" parent="." unique_id=1255661745]
+[node name="Destruction" type="Label3D" parent="." unique_id=1255661745]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -3.4335108, 3.8959022, -5.3795757)
 text = "Destruction:"
+
+[node name="Hint" type="Label3D" parent="." unique_id=1976798983]
+transform = Transform3D(-0.9999998, 0, -0.0006283839, 0, 1, 0, 0.0006283839, 0, -0.9999998, 4.367783, 0.73807883, 5.781772)
+text = "Something strange on the ceiling ?
+You should take a closer look at it..."
