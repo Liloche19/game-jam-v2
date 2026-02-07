@@ -1,10 +1,10 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://6wsedqbqkteo"]
 
-[ext_resource type="Texture2D" uid="uid://bvbtpkxjlpbfw" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_AmbientOcclusion.jpg" id="AmbientOcclusion"]
-[ext_resource type="Texture2D" uid="uid://bdxli2us6j1et" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_Color.jpg" id="Color"]
-[ext_resource type="Texture2D" uid="uid://40hqo0e50dbd" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_Displacement.jpg" id="Displacement"]
-[ext_resource type="Texture2D" uid="uid://xjq7oqau43ri" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_NormalGL.jpg" id="NormalGL"]
-[ext_resource type="Texture2D" uid="uid://dlcetcgkdqsih" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_Roughness.jpg" id="Roughness"]
+[ext_resource type="Texture2D" uid="uid://bvbtpkxjlpbfw" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_AmbientOcclusion.jpg" id="AmbientOcclusion"]
+[ext_resource type="Texture2D" uid="uid://bdxli2us6j1et" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Color.jpg" id="Color"]
+[ext_resource type="Texture2D" uid="uid://40hqo0e50dbd" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Displacement.jpg" id="Displacement"]
+[ext_resource type="Texture2D" uid="uid://xjq7oqau43ri" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_NormalGL.jpg" id="NormalGL"]
+[ext_resource type="Texture2D" uid="uid://dlcetcgkdqsih" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Roughness.jpg" id="Roughness"]
 
 [resource]
 albedo_texture = ExtResource("Color")
