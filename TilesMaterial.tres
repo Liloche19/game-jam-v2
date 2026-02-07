@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dd30q744t25j7"]
+
+[ext_resource type="Texture2D" uid="uid://b67174r2q4x2g" path="res://Textures/Tiles/Tiles107_1K-JPG_Color.jpg" id="1_dgu6u"]
+[ext_resource type="Texture2D" uid="uid://cm3dj87te7q1c" path="res://Textures/Tiles/Tiles107_1K-JPG_AmbientOcclusion.jpg" id="2_skjri"]
+[ext_resource type="Texture2D" uid="uid://cyka4y148bpbg" path="res://Textures/Tiles/Tiles107_1K-JPG_Displacement.jpg" id="3_1wdcb"]
+[ext_resource type="Texture2D" uid="uid://udsvwta6uywt" path="res://Textures/Tiles/Tiles107_1K-JPG_NormalGL.jpg" id="4_pjf4g"]
+[ext_resource type="Texture2D" uid="uid://belgfx5hu5pu3" path="res://Textures/Tiles/Tiles107_1K-JPG_Roughness.jpg" id="5_vgtx5"]
+
+[resource]
+albedo_texture = ExtResource("1_dgu6u")
+roughness_texture = ExtResource("5_vgtx5")
+normal_enabled = true
+normal_texture = ExtResource("4_pjf4g")
+ao_enabled = true
+ao_texture = ExtResource("2_skjri")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_1wdcb")
+uv1_scale = Vector3(6, 6, 1)
+grow_amount = -1.992
