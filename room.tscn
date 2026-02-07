@@ -1,5 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bjkrhhj5ugkby"]
-[ext_resource type="Script" path="res://Scripts/FractalScene.cs" id="1_a2b4c"]
+[gd_scene format=3 uid="uid://bjkrhhj5ugkby"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_v321d"]
 size = Vector3(10, 0.5, 10)
@@ -19,28 +18,37 @@ size = Vector3(0.5, 8, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_Ceiling"]
 size = Vector3(10, 0.5, 10)
 
-[node name="Room" type="Node3D" script=ExtResource("1_a2b4c")]
+[sub_resource type="PlaneMesh" id="PlaneMesh_FractalDisplay"]
+size = Vector2(8, 6)
 
-[node name="Floor" type="MeshInstance3D" parent="." uid="uid://djd8tq2m7bm0f"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Room" type="Node3D" unique_id=2023136483]
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1703681600]
 mesh = SubResource("BoxMesh_v321d")
 
-[node name="NorthWall" type="MeshInstance3D" parent="."]
+[node name="NorthWall" type="MeshInstance3D" parent="." unique_id=993280168]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -5)
 mesh = SubResource("BoxMesh_North")
 
-[node name="SouthWall" type="MeshInstance3D" parent="."]
+[node name="SouthWall" type="MeshInstance3D" parent="." unique_id=1842893805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 5)
 mesh = SubResource("BoxMesh_South")
 
-[node name="EastWall" type="MeshInstance3D" parent="."]
+[node name="EastWall" type="MeshInstance3D" parent="." unique_id=827482941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 0)
 mesh = SubResource("BoxMesh_East")
 
-[node name="WestWall" type="MeshInstance3D" parent="."]
+[node name="WestWall" type="MeshInstance3D" parent="." unique_id=107820571]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, 0)
 mesh = SubResource("BoxMesh_West")
 
-[node name="Ceiling" type="MeshInstance3D" parent="."]
+[node name="Ceiling" type="MeshInstance3D" parent="." unique_id=2076982776]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 mesh = SubResource("BoxMesh_Ceiling")
+
+[node name="FractalDisplay" type="MeshInstance3D" parent="." unique_id=1849842791]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 4, -4.5)
+mesh = SubResource("PlaneMesh_FractalDisplay")
+
+[node name="Light" type="DirectionalLight3D" parent="." unique_id=949136863]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, -0.0007, 0, 7, 0)
