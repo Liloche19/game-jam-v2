@@ -148,8 +148,8 @@ mesh = SubResource("BoxMesh_aqk2v")
 
 [node name="Text" type="Label3D" parent="FactoryRoom/FakeWall" unique_id=546648778]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1350374, 0.09882927, 0.01999998)
-text = "Welcome to our factory
-here there is nothing to do
+text = "Welcome to our factory!
+There is nothing to do here...
 "
 font = ExtResource("5_dwbse")
 font_size = 64
