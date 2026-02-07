@@ -4,6 +4,7 @@ using Godot;
 public partial class Minus : Area3D
 {
     [Export] public Label3D Label;
+    [Export] public CollisionShape3D Floor;
 
     public override void _Ready()
     {
@@ -27,5 +28,7 @@ public partial class Minus : Area3D
         {
             Label.Text = value.ToString();
         }
+        if  (Floor != null && value == 65535)
+            Floor.QueueFree();
     }
 }

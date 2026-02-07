@@ -8,6 +8,27 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_n502b"]
 size = Vector3(16.310791, 0.2, 16.37622)
 
+[sub_resource type="CSharpScript" id="CSharpScript_6em4c"]
+script/source = "using Godot;
+using System;
+
+public partial class Label3d : Label3D
+{
+
+	[Export] public CollisionShape3D Floor;
+	
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+}
+"
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_6em4c"]
 height = 0.001
 
@@ -68,11 +89,13 @@ material = ExtResource("1_6em4c")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0543184, 2.3361254, -7.0323005)
 text = "10"
 font_size = 96
+script = SubResource("CSharpScript_6em4c")
 
-[node name="Minus" type="Area3D" parent="Counter" unique_id=1138556155 node_paths=PackedStringArray("Label")]
+[node name="Minus" type="Area3D" parent="Counter" unique_id=1138556155 node_paths=PackedStringArray("Label", "Floor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0680473, -5.171859)
 script = ExtResource("1_23v6p")
 Label = NodePath("../Label3D")
+Floor = NodePath("../../Floor/CollisionShape3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Counter/Minus" unique_id=1646583432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026572824, -1.3197689, -0.42329884)
