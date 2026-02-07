@@ -15,6 +15,7 @@ namespace FractalGenerator
 		private FractalRenderer _fractalRenderer;
 		private FractalUI _fractalUI;
 		private Camera3D _camera;
+		private bool _winTriggered = false;
 
 		// Input handling
 		private float _panSensitivity = 0.1f;
@@ -25,6 +26,7 @@ namespace FractalGenerator
 			try
 			{
 				GD.Print("FractalScene: Starting initialization...");
+				EnsureFractalInputBindings();
 				
 				// Find existing camera from Player node (don't create a new one)
 				_camera = GetNodeOrNull<Camera3D>("Player/Camera3D");
@@ -37,37 +39,37 @@ namespace FractalGenerator
 					GD.Print("FractalScene: Found player camera");
 				}
 
-				// TEMPORARILY DISABLED - Fractal rendering
-				/*
-				// Create fractal renderer
-				GD.Print("FractalScene: Creating FractalRenderer...");
-				_fractalRenderer = new FractalRenderer();
-				_fractalRenderer.Name = "FractalRenderer"; // Set name so UI can find it
-				_fractalRenderer.TextureWidth = 1600;
-				_fractalRenderer.TextureHeight = 1200;
-				_fractalRenderer.UseGPURendering = true;
-				AddChild(_fractalRenderer);
-				GD.Print("FractalScene: FractalRenderer created");
-
-				// Create UI Layer
-				GD.Print("FractalScene: Creating UI layer...");
-				CanvasLayer uiLayer = new CanvasLayer();
-				uiLayer.Layer = 1; // Render on top
-				AddChild(uiLayer);
-
-				// Create and configure UI
-				GD.Print("FractalScene: Creating FractalUI...");
-				_fractalUI = new FractalUI();
-				_fractalUI.AnchorLeft = 0f;
-				_fractalUI.AnchorTop = 0f;
-				_fractalUI.AnchorRight = 0f;
-				_fractalUI.AnchorBottom = 1f;
-				_fractalUI.CustomMinimumSize = new Vector2(400, 0); // Set width for left panel
-				uiLayer.AddChild(_fractalUI);
-				GD.Print("FractalScene: FractalUI created");
-				*/
-
-				GD.Print("FractalScene initialization complete (fractal rendering disabled for testing).");
+			// Create fractal renderer
+			GD.Print("FractalScene: Creating FractalRenderer...");
+			_fractalRenderer = new FractalRenderer();
+			_fractalRenderer.Name = "FractalRenderer";
+			_fractalRenderer.TextureWidth = 1600;
+			_fractalRenderer.TextureHeight = 1200;
+			// Prefer GPU rendering for responsiveness.
+			_fractalRenderer.UseGPURendering = true;
+			AddChild(_fractalRenderer);
+			GD.Print("FractalScene: FractalRenderer created");
+			
+			// Create UI Layer
+			GD.Print("FractalScene: Creating UI layer...");
+			CanvasLayer uiLayer = new CanvasLayer();
+			uiLayer.Layer = 1;
+			AddChild(uiLayer);
+			
+			// Create and configure UI
+			GD.Print("FractalScene: Creating FractalUI...");
+			_fractalUI = new FractalUI();
+			_fractalUI.AnchorLeft = 0f;
+			_fractalUI.AnchorTop = 0f;
+			_fractalUI.AnchorRight = 0f;
+			_fractalUI.AnchorBottom = 1f;
+			_fractalUI.CustomMinimumSize = new Vector2(400, 0);
+			uiLayer.AddChild(_fractalUI);
+			// Bind UI to the renderer so controls affect the correct instance
+			_fractalUI.BindRenderer(_fractalRenderer);
+			GD.Print("FractalScene: FractalUI created");
+			
+			GD.Print("FractalScene initialization complete!");
 			}
 			catch (Exception e)
 			{
@@ -78,9 +80,9 @@ namespace FractalGenerator
 
 		public override void _Process(double delta)
 		{
-			// TEMPORARILY DISABLED for testing
-			// HandleInput();
-			// CheckWinCondition();
+			// Handle input and win condition check
+			HandleInput();
+			CheckWinCondition();
 		}
 
 		/// <summary>
@@ -88,11 +90,14 @@ namespace FractalGenerator
 		/// </summary>
 		private void CheckWinCondition()
 		{
+			if (_fractalRenderer == null) return;
+			
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
-			if (fractal != null && fractal.DivisionByZeroOccurred)
+			if (fractal != null && fractal.DivisionByZeroOccurred && !_winTriggered)
 			{
-				GD.Print("🎉 PLAYER WON! Division by Zero Found!");
-				// Reset for next try
+				_winTriggered = true;
+				DisableFloorCollisions();
+				// Reset the flag so we don't keep triggering
 				fractal.DivisionByZeroOccurred = false;
 			}
 		}
@@ -102,15 +107,17 @@ namespace FractalGenerator
 		/// </summary>
 		private void HandleInput()
 		{
+			if (_fractalRenderer == null) return;
+			
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
 			if (fractal == null) return;
 
-			// Zoom controls
-			if (Input.IsActionPressed("ui_select"))
+			// Zoom controls (use custom actions to avoid jump key conflicts)
+			if (Input.IsActionPressed("fractal_zoom_in"))
 			{
 				_fractalRenderer.ZoomIn(fractal.CenterPosition, _zoomSensitivity);
 			}
-			if (Input.IsActionPressed("ui_cancel"))
+			if (Input.IsActionPressed("fractal_zoom_out"))
 			{
 				_fractalRenderer.ZoomOut(_zoomSensitivity);
 			}
@@ -138,6 +145,38 @@ namespace FractalGenerator
 			{
 				fractal.Reset();
 				_fractalRenderer.MarkForUpdate();
+			}
+		}
+
+		private void EnsureFractalInputBindings()
+		{
+			EnsureActionBinding("fractal_zoom_in", Key.Pageup);
+			EnsureActionBinding("fractal_zoom_out", Key.Pagedown);
+		}
+
+		private void EnsureActionBinding(string actionName, Key key)
+		{
+			if (InputMap.HasAction(actionName))
+				return;
+			InputMap.AddAction(actionName);
+			InputMap.ActionAddEvent(actionName, new InputEventKey { Keycode = key });
+		}
+
+		private void DisableFloorCollisions()
+		{
+			var floor = GetTree().CurrentScene?.FindChild("Floor", true, false) as StaticBody3D;
+			if (floor == null)
+			{
+				GD.PrintErr("FractalScene: Floor not found; cannot disable collisions");
+				return;
+			}
+
+			floor.CollisionLayer = 0;
+			floor.CollisionMask = 0;
+			foreach (Node child in floor.GetChildren())
+			{
+				if (child is CollisionShape3D shape)
+					shape.Disabled = true;
 			}
 		}
 	}

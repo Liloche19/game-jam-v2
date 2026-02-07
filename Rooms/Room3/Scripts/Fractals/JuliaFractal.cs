@@ -6,22 +6,29 @@ namespace FractalGenerator.Fractals
 {
 	/// <summary>
 	/// Rational Julia fractal generator.
-	/// Uses the formula: z = 1 / (z² - shift)
-	/// Division by 0 occurs when z² = shift, creating a win condition.
-	/// Different shift values produce different fractal structures.
+	/// Uses the formula: z = (k / (z - x))^2 + v
+	/// Division by 0 occurs when z - x = 0, creating a win condition.
+	/// Different v values produce different fractal structures.
 	/// 
-	/// Mathematical formula: z_{n+1} = 1 / (z_n^2 - shift)
-	/// When z² equals shift, division by 0 triggers the win condition!
+	/// Mathematical formula: z_{n+1} = (k / (z_n - x))^2 + v
+	/// When z - x equals 0, division by 0 triggers the win condition!
 	/// </summary>
 	public class JuliaFractal : FractalBase
 	{
 		public override FractalType Type => FractalType.Julia;
 
 		/// <summary>
-		/// The shift parameter that defines where division by 0 can happen.
-		/// When z² = shift, we get division by 0 (the win condition!).
+		/// The v parameter that the player can modify.
 		/// </summary>
-		public Complex ShiftParameter { get; set; } = new Complex(0.25f, 0.5f); // Non-trivial starting point
+		public Complex VParameter { get; set; } = new Complex(0.25f, 0.5f); // Non-trivial starting point
+		/// <summary>
+		/// Constant x in the formula (not player-modifiable).
+		/// </summary>
+		public Complex ConstantX { get; } = new Complex(0.15f, -0.2f);
+		/// <summary>
+		/// Constant k in the formula (real scalar).
+		/// </summary>
+		public float ConstantK { get; } = 1.0f;
 		public int PaletteIndex { get; set; } = 0;
 
 		public JuliaFractal()
@@ -37,14 +44,14 @@ namespace FractalGenerator.Fractals
 			ColorRange = 1f;
 			ColorShift = 0f;
 			SmoothColoring = true;
-			ShiftParameter = new Complex(0.25f, 0.5f); // Non-trivial starting point
+			VParameter = new Complex(0.25f, 0.5f); // Non-trivial starting point
 			DivisionByZeroOccurred = false;
 		}
 
 		/// <summary>
-		/// Computes rational Julia set iterations using z = 1 / (z² - shift).
-		/// Division by 0 occurs when z² = shift, which is the WIN CONDITION!
-		/// This is the game mechanic: find parameters that cause division by 0.
+		/// Computes rational Julia set iterations using z = (k / (z - x))^2 + v.
+		/// Division by 0 occurs when z - x = 0, which is the WIN CONDITION!
+		/// This is the game mechanic: find v that causes division by 0.
 		/// </summary>
 		public override int ComputeIterations(Complex z, out float smoothValue)
 		{
@@ -52,14 +59,15 @@ namespace FractalGenerator.Fractals
 			float maxModulusSq = 100f * 100f; // Larger escape radius for rational function
 			smoothValue = 0f;
 			float divisionByZeroThreshold = 1e-6f; // Very small threshold to detect near-division
+			Complex k = new Complex(ConstantK, 0f);
 
 			if (SmoothColoring)
 				smoothValue = MathF.Exp(-z.Modulus);
 
 			while (z.ModulusSquared < maxModulusSq && iterations < MaxIterations)
 			{
-				// Compute z² - shift (the denominator)
-				Complex denominator = z.Square() - ShiftParameter;
+				// Compute z - x (the denominator)
+				Complex denominator = z - ConstantX;
 				float denominatorModulus = denominator.Modulus;
 
 				// Check for division by 0 (WIN CONDITION!)
@@ -70,8 +78,8 @@ namespace FractalGenerator.Fractals
 					return iterations; // Return early - we found the win!
 				}
 
-				// z = 1 / (z² - shift)
-				z = new Complex(1f, 0f) / denominator;
+				// z = (k / (z - x))^2 + v
+				z = (k / denominator).Square() + VParameter;
 				iterations++;
 
 				if (SmoothColoring)
@@ -96,12 +104,12 @@ namespace FractalGenerator.Fractals
 		}
 
 		/// <summary>
-		/// Sets the shift parameter from two float components.
-		/// Adjusting these values changes where division by 0 can occur!
+		/// Sets the v parameter from two float components.
+		/// Adjusting these values changes where division by 0 can occur.
 		/// </summary>
-		public void SetShiftParameter(float real, float imaginary)
+		public void SetVParameter(float real, float imaginary)
 		{
-			ShiftParameter = new Complex(real, imaginary);
+			VParameter = new Complex(real, imaginary);
 		}
 	}
 }

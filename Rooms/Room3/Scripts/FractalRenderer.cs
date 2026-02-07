@@ -19,11 +19,14 @@ namespace FractalGenerator
 		[Export] public int TextureWidth { get; set; } = 800;
 		[Export] public int TextureHeight { get; set; } = 600;
 		[Export] public bool UseGPURendering { get; set; } = true;
+		[Export] public float MinZoom { get; set; } = 0.001f;
+		[Export] public float MaxZoom { get; set; } = 150f;
 
 		private FractalBase _currentFractal;
 		private Image _fractalImage;
 		private ImageTexture _fractalTexture;
 		private MeshInstance3D _displayMesh;
+		private bool _createdFallbackDisplay = false;
 		private bool _needsUpdate = true;
 
 		// GPU shader resources
@@ -38,19 +41,27 @@ namespace FractalGenerator
 				
 				// Find the FractalDisplay mesh in the scene (should be in room.tscn)
 				GD.Print("FractalRenderer: Looking for FractalDisplay mesh...");
-				_displayMesh = GetParent().FindChild("FractalDisplay", true, false) as MeshInstance3D;
+				_displayMesh = GetTree().CurrentScene?.FindChild("FractalDisplay", true, false) as MeshInstance3D;
 			
 				if (_displayMesh == null)
 				{
 					// Fallback: Create display mesh if not found in scene
 					GD.PrintErr("FractalRenderer: FractalDisplay not found in scene, creating new mesh");
 					_displayMesh = new MeshInstance3D();
-					AddChild(_displayMesh);
+					_createdFallbackDisplay = true;
+					// Parent fallback display to the current scene so it's visible in the room
+					var sceneRoot = GetTree().CurrentScene as Node;
+					if (sceneRoot != null)
+						sceneRoot.AddChild(_displayMesh);
+					else
+						AddChild(_displayMesh);
 
 					// Create a plane mesh to display the fractal
 					PlaneMesh planeMesh = new PlaneMesh();
 					planeMesh.Size = new Vector2(10, 7.5f); // 4:3 aspect ratio
 					_displayMesh.Mesh = planeMesh;
+					// Place fallback plane slightly in front of origin so a default camera can see it
+					_displayMesh.Transform = new Transform3D(Basis.Identity, new Vector3(0, 1.5f, -3));
 				}
 				else
 				{
@@ -124,6 +135,7 @@ namespace FractalGenerator
 		/// </summary>
 		private void RenderFractalCPU()
 		{
+			GD.Print("FractalRenderer: Starting CPU render...");
 			for (int y = 0; y < TextureHeight; y++)
 			{
 				for (int x = 0; x < TextureWidth; x++)
@@ -140,12 +152,26 @@ namespace FractalGenerator
 					_fractalImage.SetPixel(x, y, pixelColor);
 				}
 			}
-
+			// Push updates to the GPU texture
 			_fractalTexture.Update(_fractalImage);
+
+			GD.Print("FractalRenderer: CPU render complete, texture updated");
+
+			// Ensure the material on the display mesh references the updated texture
+			if (_displayMesh != null)
+			{
+				var mat = _displayMesh.GetSurfaceOverrideMaterial(0) as StandardMaterial3D;
+				if (mat != null)
+				{
+					mat.AlbedoTexture = _fractalTexture;
+					_displayMesh.SetSurfaceOverrideMaterial(0, mat);
+				}
+				_displayMesh.Visible = true;
+			}
 		}
 
 		/// <summary>
-		/// GPU-based fractal rendering using Godot shaders.
+		/// GPU-based fractal rendering using Godot shaders.c
 		/// Much faster for real-time interactive zoom and pan.
 		/// </summary>
 		private void RenderFractalGPU()
@@ -154,7 +180,7 @@ namespace FractalGenerator
 			if (_cachedShaderMaterial == null)
 			{
 				_cachedShaderMaterial = new ShaderMaterial();
-				Shader shader = GD.Load<Shader>("res://Shaders/fractal.gdshader");
+				Shader shader = GD.Load<Shader>("res://Ressources/Shaders/fractal.gdshader");
 				
 				if (shader == null)
 				{
@@ -175,12 +201,18 @@ namespace FractalGenerator
 			_cachedShaderMaterial.SetShaderParameter("max_iterations", _currentFractal.MaxIterations);
 			_cachedShaderMaterial.SetShaderParameter("color_range", _currentFractal.ColorRange);
 			_cachedShaderMaterial.SetShaderParameter("color_shift", _currentFractal.ColorShift);
+			// Pass texture dimensions so shader can compute correct aspect
+			_cachedShaderMaterial.SetShaderParameter("tex_w", (float)TextureWidth);
+			_cachedShaderMaterial.SetShaderParameter("tex_h", (float)TextureHeight);
 
-			// For Julia set, pass the shift parameters
+			// For Julia set, pass v, x, and k parameters
 			if (_currentFractal is JuliaFractal julia)
 			{
-				_cachedShaderMaterial.SetShaderParameter("shift_real", julia.ShiftParameter.Real);
-				_cachedShaderMaterial.SetShaderParameter("shift_imag", julia.ShiftParameter.Imaginary);
+				_cachedShaderMaterial.SetShaderParameter("v_real", julia.VParameter.Real);
+				_cachedShaderMaterial.SetShaderParameter("v_imag", julia.VParameter.Imaginary);
+				_cachedShaderMaterial.SetShaderParameter("x_real", julia.ConstantX.Real);
+				_cachedShaderMaterial.SetShaderParameter("x_imag", julia.ConstantX.Imaginary);
+				_cachedShaderMaterial.SetShaderParameter("k_value", julia.ConstantK);
 			}
 
 			// Apply shader material to mesh
@@ -211,7 +243,7 @@ namespace FractalGenerator
 		public void ZoomIn(Complex point, float factor = 2f)
 		{
 			_currentFractal.CenterPosition = point;
-			_currentFractal.ZoomLevel /= factor;
+			_currentFractal.ZoomLevel = Mathf.Clamp(_currentFractal.ZoomLevel / factor, MinZoom, MaxZoom);
 			MarkForUpdate();
 		}
 
@@ -220,7 +252,7 @@ namespace FractalGenerator
 		/// </summary>
 		public void ZoomOut(float factor = 2f)
 		{
-			_currentFractal.ZoomLevel *= factor;
+			_currentFractal.ZoomLevel = Mathf.Clamp(_currentFractal.ZoomLevel * factor, MinZoom, MaxZoom);
 			MarkForUpdate();
 		}
 

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bjkrhhj5ugkby"]
 [ext_resource type="Texture2D" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Color.jpg" id="1_plaster_color"]
 [ext_resource type="PackedScene" path="res://Player/player.tscn" id="2_player_scene"]
+[ext_resource type="Script" path="res://Rooms/Room3/Scripts/FractalScene.cs" id="3_fractal_scene_script"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_v321d"]
 size = Vector3(10, 0.5, 10)
@@ -125,6 +126,9 @@ shape = SubResource("BoxShape3D_Ceiling")
 [node name="FractalDisplay" type="MeshInstance3D" parent="." unique_id=1849842791]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 4, -4.5)
 mesh = SubResource("PlaneMesh_FractalDisplay")
+
+[node name="FractalScene" type="Node3D" parent="." unique_id=1938475612]
+script = ExtResource("3_fractal_scene_script")
 
 [node name="Player" instance=ExtResource("2_player_scene") parent="."]
 

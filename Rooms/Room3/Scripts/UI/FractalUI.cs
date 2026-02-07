@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using FractalGenerator;
 using FractalGenerator.Fractals;
 
 namespace FractalGenerator.UI
@@ -31,10 +32,9 @@ namespace FractalGenerator.UI
 	private SpinBox _panYSpinBox;
 	private SpinBox _zoomSpinBox;
 
-	// UI Elements - Shift Parameters (Julia)
-	private SpinBox _shiftRealSpinBox;
-	private SpinBox _shiftImagSpinBox;
-	private Label _winStatusLabel;
+	// UI Elements - v Parameters (Julia)
+	private SpinBox _vRealSpinBox;
+	private SpinBox _vImagSpinBox;
 	private bool _updatingUI = false; // Prevent feedback loops
 
 		public override void _Ready()
@@ -44,23 +44,12 @@ namespace FractalGenerator.UI
 			GD.Print("FractalUI: Starting _Ready...");
 			
 			GD.Print("FractalUI: Looking for FractalRenderer...");
-			_fractalRenderer = GetParent<Node>().FindChild("FractalRenderer", true, false) as FractalRenderer;
+			_fractalRenderer = GetTree().CurrentScene?.FindChild("FractalRenderer", true, false) as FractalRenderer;
 
-			if (_fractalRenderer == null)
-			{
-				GD.PrintErr("FractalUI: Could not find FractalRenderer node");
-				return;
-			}
-			
-			GD.Print("FractalUI: Found FractalRenderer, creating UI panel...");
+			GD.Print("FractalUI: Found FractalRenderer (or will wait to be bound), creating UI panel...");
 
 			// Create UI Panel
 			PanelContainer mainPanel = new PanelContainer();
-			mainPanel.AddThemeStyleboxOverride("panel", new StyleBoxFlat() { BgColor = new Color(0.1f, 0.1f, 0.1f, 0.8f) });
-			mainPanel.CustomMinimumSize = new Vector2(400, 0);
-			AddChild(mainPanel);
-
-			// Create main container
 			VBoxContainer mainContainer = new VBoxContainer();
 			mainPanel.AddChild(mainContainer);
 			
@@ -72,13 +61,6 @@ namespace FractalGenerator.UI
 			titleLabel.LabelSettings = new LabelSettings();
 			titleLabel.LabelSettings.FontSize = 24;
 			mainContainer.AddChild(titleLabel);
-
-			// Win status indicator (hidden until victory)
-			_winStatusLabel = new Label { Text = "" };
-			_winStatusLabel.LabelSettings = new LabelSettings();
-			_winStatusLabel.LabelSettings.FontSize = 18;
-			_winStatusLabel.Visible = false; // Hidden until victory
-			mainContainer.AddChild(_winStatusLabel);
 
 			mainContainer.AddChild(new HSeparator());
 
@@ -150,26 +132,26 @@ namespace FractalGenerator.UI
 
 			mainContainer.AddChild(new HSeparator());
 			
-			GD.Print("FractalUI: Creating shift parameter controls...");
+			GD.Print("FractalUI: Creating v parameter controls...");
 
-			// Shift Parameters (Division by Zero Parameters)
-			mainContainer.AddChild(new Label { Text = "Shift Parameter (Where Division by 0 Occurs):" });
+			// v Parameters (Division by Zero Parameters)
+			mainContainer.AddChild(new Label { Text = "v Parameter (Where Division by 0 Occurs):" });
 
 			mainContainer.AddChild(new Label { Text = "Real:" });
-			_shiftRealSpinBox = new SpinBox();
-			_shiftRealSpinBox.MinValue = -1.5f;
-			_shiftRealSpinBox.MaxValue = 1.5f;
-			_shiftRealSpinBox.Step = 0.01f;
-			_shiftRealSpinBox.ValueChanged += OnShiftChanged;
-			mainContainer.AddChild(_shiftRealSpinBox);
+			_vRealSpinBox = new SpinBox();
+			_vRealSpinBox.MinValue = -1.5f;
+			_vRealSpinBox.MaxValue = 1.5f;
+			_vRealSpinBox.Step = 0.01f;
+			_vRealSpinBox.ValueChanged += OnVChanged;
+			mainContainer.AddChild(_vRealSpinBox);
 
 			mainContainer.AddChild(new Label { Text = "Imaginary:" });
-			_shiftImagSpinBox = new SpinBox();
-			_shiftImagSpinBox.MinValue = -1.5f;
-			_shiftImagSpinBox.MaxValue = 1.5f;
-			_shiftImagSpinBox.Step = 0.01f;
-			_shiftImagSpinBox.ValueChanged += OnShiftChanged;
-			mainContainer.AddChild(_shiftImagSpinBox);
+			_vImagSpinBox = new SpinBox();
+			_vImagSpinBox.MinValue = -1.5f;
+			_vImagSpinBox.MaxValue = 1.5f;
+			_vImagSpinBox.Step = 0.01f;
+			_vImagSpinBox.ValueChanged += OnVChanged;
+			mainContainer.AddChild(_vImagSpinBox);
 
 			// Reset button
 			mainContainer.AddChild(new HSeparator());
@@ -188,6 +170,17 @@ namespace FractalGenerator.UI
 		}
 	}
 
+	/// <summary>
+	/// Bind a FractalRenderer instance to this UI. Useful when the renderer
+	/// is created after the UI or when the automatic search didn't find it.
+	/// </summary>
+	public void BindRenderer(FractalRenderer renderer)
+	{
+		_fractalRenderer = renderer;
+		GD.Print("FractalUI: Bound to FractalRenderer via BindRenderer()");
+		UpdateUIFromFractal();
+	}
+
 	private void OnFractalTypeChanged(long index)
 	{
 			// No longer needed - only Julia fractal exists
@@ -198,6 +191,7 @@ namespace FractalGenerator.UI
 		private void OnParameterChanged(double value = 0)
 		{
 			if (_updatingUI) return;
+			if (_fractalRenderer == null) return;
 
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
 			if (fractal == null) return;
@@ -213,6 +207,7 @@ namespace FractalGenerator.UI
 		private void OnViewChanged(double value = 0)
 		{
 			if (_updatingUI) return;
+			if (_fractalRenderer == null) return;
 
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
 			if (fractal == null) return;
@@ -226,27 +221,30 @@ namespace FractalGenerator.UI
 		private void OnJuliaChanged(double value = 0)
 		{
 			if (_updatingUI) return;
+			if (_fractalRenderer == null) return;
 
 			if (_fractalRenderer.GetCurrentFractal() is JuliaFractal julia)
 			{
-				julia.SetShiftParameter((float)_shiftRealSpinBox.Value, (float)_shiftImagSpinBox.Value);
+				julia.SetVParameter((float)_vRealSpinBox.Value, (float)_vImagSpinBox.Value);
 				_fractalRenderer.MarkForUpdate();
 			}
 		}
 
-		private void OnShiftChanged(double value = 0)
+		private void OnVChanged(double value = 0)
 		{
 			if (_updatingUI) return;
+			if (_fractalRenderer == null) return;
 
 			if (_fractalRenderer.GetCurrentFractal() is JuliaFractal julia)
 			{
-				julia.SetShiftParameter((float)_shiftRealSpinBox.Value, (float)_shiftImagSpinBox.Value);
+				julia.SetVParameter((float)_vRealSpinBox.Value, (float)_vImagSpinBox.Value);
 				_fractalRenderer.MarkForUpdate();
 			}
 		}
 
 		private void OnResetPressed()
 		{
+			if (_fractalRenderer == null) return;
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
 			if (fractal != null)
 			{
@@ -262,6 +260,11 @@ namespace FractalGenerator.UI
 		private void UpdateUIFromFractal()
 		{
 			_updatingUI = true;
+			if (_fractalRenderer == null)
+			{
+				_updatingUI = false;
+				return;
+			}
 
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
 			if (fractal == null) return;
@@ -277,23 +280,11 @@ namespace FractalGenerator.UI
 			_panYSpinBox.Value = fractal.CenterPosition.Imaginary;
 			_zoomSpinBox.Value = fractal.ZoomLevel;
 
-			// Update shift parameters (Julia only - always visible now)
+			// Update v parameters (Julia only - always visible now)
 			if (fractal is JuliaFractal julia)
 			{
-				_shiftRealSpinBox.Value = julia.ShiftParameter.Real;
-				_shiftImagSpinBox.Value = julia.ShiftParameter.Imaginary;
-
-				// Update win status - only show when victory occurs
-				if (julia.DivisionByZeroOccurred)
-				{
-					_winStatusLabel.Text = "🎉 YOU WIN! Division by Zero Found!";
-					_winStatusLabel.LabelSettings.FontColor = new Color(0, 1, 0); // Green
-					_winStatusLabel.Visible = true; // Show on victory
-				}
-				else
-				{
-					_winStatusLabel.Visible = false; // Hide when not won
-				}
+				_vRealSpinBox.Value = julia.VParameter.Real;
+				_vImagSpinBox.Value = julia.VParameter.Imaginary;
 			}
 
 			_updatingUI = false;

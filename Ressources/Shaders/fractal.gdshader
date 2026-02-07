@@ -1,11 +1,12 @@
 // Godot 4 Fragment Shader for Division by Zero Julia Fractal
 // 
 // A rational Julia set that generates division by 0 as a win condition.
-// Uses the formula: z = 1 / (z² - shift)
+// Uses the formula: z = (k / (z - x))^2 + v
 // 
 // The game mechanic: Find parameters where division by 0 occurs during iteration!
 
-shader_type canvas_item;
+shader_type spatial;
+render_mode unshaded;
 
 // Fractal parameters
 uniform float center_x = 0.0;
@@ -14,11 +15,16 @@ uniform float zoom = 3.0;
 uniform int max_iterations = 100;
 uniform float color_range = 1.0;
 uniform float color_shift = 0.0;
+uniform float tex_w = 800.0;
+uniform float tex_h = 600.0;
 
 // Division by Zero Julia set parameters
-// Adjust these to find where division by 0 occurs!
-uniform float shift_real = -0.4;
-uniform float shift_imag = 0.6;
+// v is player-controlled, x and k are constants
+uniform float v_real = -0.4;
+uniform float v_imag = 0.6;
+uniform float x_real = 0.15;
+uniform float x_imag = -0.2;
+uniform float k_value = 1.0;
 
 // ============================================================================
 // Complex Number Operations
@@ -61,9 +67,9 @@ float complex_modulus(vec2 z) {
 // ============================================================================
 
 // Division by Zero Julia set iteration
-// Formula: z = 1 / (z² - shift)
-// Division by 0 occurs when z² = shift (THE WIN CONDITION!)
-int compute_division_julia(vec2 z, vec2 shift, out float smooth_value, out bool div_by_zero) {
+// Formula: z = (k / (z - x))^2 + v
+// Division by 0 occurs when z - x = 0 (THE WIN CONDITION!)
+int compute_division_julia(vec2 z, vec2 v, vec2 x, float k, out float smooth_value, out bool div_by_zero) {
 	int iterations = 0;
 	float max_modulus_sq = 10000.0; // Large escape radius for rational function
 	smooth_value = 0.0;
@@ -71,9 +77,8 @@ int compute_division_julia(vec2 z, vec2 shift, out float smooth_value, out bool 
 	float division_threshold = 1e-6; // Threshold to detect near-division
 	
 	while (complex_modulus_squared(z) < max_modulus_sq && iterations < max_iterations) {
-		// Compute z² - shift (the denominator)
-		vec2 z_squared = complex_square(z);
-		vec2 denominator = complex_subtract(z_squared, shift);
+		// Compute z - x (the denominator)
+		vec2 denominator = complex_subtract(z, x);
 		float denominator_modulus = complex_modulus(denominator);
 		
 		// Check for division by 0
@@ -83,8 +88,10 @@ int compute_division_julia(vec2 z, vec2 shift, out float smooth_value, out bool 
 			return iterations;
 		}
 		
-		// z = 1 / (z² - shift)
-		z = complex_divide(vec2(1.0, 0.0), denominator);
+		// z = (k / (z - x))^2 + v
+		vec2 k_complex = vec2(k, 0.0);
+		vec2 fraction = complex_divide(k_complex, denominator);
+		z = complex_add(complex_square(fraction), v);
 		iterations++;
 	}
 	
@@ -117,7 +124,7 @@ vec3 hsv_to_rgb(vec3 hsv) {
 	return rgb;
 }
 
-// Generate color from iteration count using smooth coloring
+// Generate color from iteration count
 // Special handling for division by 0 (the win condition!)
 vec4 get_color(int iterations, float smooth_value, bool div_by_zero) {
 	// Division by 0 - WIN! Show bright red
@@ -129,14 +136,10 @@ vec4 get_color(int iterations, float smooth_value, bool div_by_zero) {
 		return vec4(0.0, 0.0, 0.0, 1.0); // Black for in-set points
 	}
 	
-	// Normalize smooth value
-	float normalized = mod(smooth_value / float(max_iterations), 1.0);
-	
-	// Apply color shift
-	float hue = mod(normalized + color_shift, 1.0);
-	
-	// Convert HSV to RGB
-	vec3 rgb = hsv_to_rgb(vec3(hue, 1.0, 1.0));
+	// Robust palette: use iteration ratio to create RGB bands
+	float t = float(iterations) / float(max_iterations);
+	float phase = t * color_range + color_shift;
+	vec3 rgb = 0.5 + 0.5 * sin(6.2831853 * (phase + vec3(0.0, 0.33, 0.67)));
 	
 	return vec4(rgb, 1.0);
 }
@@ -149,9 +152,9 @@ void fragment() {
 	// Convert fragment coordinates to normalized coordinates [0, 1]
 	vec2 uv = UV;
 	
-	// Calculate viewport dimensions in complex plane
+	// Calculate viewport dimensions in complex plane using texture aspect
 	float width = zoom;
-	float height = zoom * (float(SCREEN_PIXEL_SIZE.y) / float(SCREEN_PIXEL_SIZE.x));
+	float height = zoom * (tex_h / tex_w);
 	
 	// Convert screen coordinates to complex plane coordinates
 	vec2 complex_pos = vec2(
@@ -164,9 +167,12 @@ void fragment() {
 	float smooth_value = 0.0;
 	bool div_by_zero = false;
 	
-	vec2 shift = vec2(shift_real, shift_imag);
-	iterations = compute_division_julia(complex_pos, shift, smooth_value, div_by_zero);
+	vec2 v = vec2(v_real, v_imag);
+	vec2 x = vec2(x_real, x_imag);
+	iterations = compute_division_julia(complex_pos, v, x, k_value, smooth_value, div_by_zero);
 	
 	// Convert iterations to color (includes special handling for division by 0)
-	COLOR = get_color(iterations, smooth_value, div_by_zero);
+	vec4 outcol = get_color(iterations, smooth_value, div_by_zero);
+	ALBEDO = outcol.rgb;
+	ALPHA = outcol.a;
 }
