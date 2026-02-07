@@ -491,7 +491,7 @@ material_override = SubResource("StandardMaterial3D_ejx2o")
 mesh = SubResource("BoxMesh_m1mym")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MazeWalls/Wall_AREA/Wall_Right" unique_id=1471158372]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011780186, 0.13801289, 8.871728)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011780183, 0.13801289, 8.798148)
 shape = SubResource("BoxShape3D_oj6sr")
 
 [node name="Wall_Fake" type="Node3D" parent="MazeWalls" unique_id=1743309593]
@@ -510,7 +510,6 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D" unique_id=572538938]
 transform = Transform3D(-4.371139e-08, 0, -1.0000001, 0, 1, 0, 1, 0, -4.3711392e-08, -10.817171, 1.841485, 0.06960794)
-modulate = Color(1, 0, 0, 1)
 text = "Welcome in the last room.
 You need to find the exit !
 "
@@ -530,8 +529,7 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D2" unique_id=550923761]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.782565, 1.969717, 4.7678556)
-modulate = Color(1, 0, 0, 1)
-text = "Can you follow your idea ? 
+text = "Can you follow you idea ?
 "
 font = ExtResource("3_65vop")
 
@@ -549,9 +547,7 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D3" unique_id=142827148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.904882, 1.841485, -9.756899)
-modulate = Color(1, 0, 0, 1)
 text = "Well Played ! you are the best !"
-font = ExtResource("3_65vop")
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="MazeWalls/Wall_Fake" unique_id=1344058137]
 
@@ -581,6 +577,10 @@ font = ExtResource("3_65vop")
 [node name="Welcome" type="Label3D" parent="MazeWalls" unique_id=536555213]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 10.150936, 2.1345048, -14.580809)
 modulate = Color(1, 0, 0, 1)
+text = "Well played ! you finished this room."
+
+[node name="Welcome" type="Label3D" parent="MazeWalls" unique_id=536555213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 10.150936, 2.1345048, -14.580809)
 text = "HAHAHAHAHA
 You have been trolled !
 "

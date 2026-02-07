@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dnypkdxd0jxur"]
 
-[ext_resource type="Material" uid="uid://dd30q744t25j7" path="res://TilesMaterial.tres" id="1_c8ljk"]
-[ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://player.tscn" id="2_sry3f"]
-[ext_resource type="Script" uid="uid://bq2bwku6oh0bw" path="res://PressurePlate.cs" id="3_sry3f"]
+[ext_resource type="Material" uid="uid://dkffolmnrmyrm" path="res://Ressources/Textures/TilesMaterial.tres" id="1_70i4t"]
+[ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="2_sry3f"]
+[ext_resource type="Script" uid="uid://bq2bwku6oh0bw" path="res://Rooms/LastRoom/Scripts/PressurePlate.cs" id="3_sry3f"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n502b"]
 size = Vector3(16.310791, 0.2, 16.37622)
@@ -40,30 +40,30 @@ shape = SubResource("BoxShape3D_n502b")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 3.25, -7.291)
 use_collision = true
 size = Vector3(15, 0.5, 5)
-material = ExtResource("1_c8ljk")
+material = ExtResource("1_70i4t")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Walls" unique_id=170729838]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 3.25, 7.716246)
 use_collision = true
 size = Vector3(15, 0.5, 5)
-material = ExtResource("1_c8ljk")
+material = ExtResource("1_70i4t")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="Walls" unique_id=773786819]
 transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, -1, 1, -4.371139e-08, -4.371139e-08, 7.5, 3.25, 0)
 use_collision = true
 size = Vector3(15, 0.5, 5)
-material = ExtResource("1_c8ljk")
+material = ExtResource("1_70i4t")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="Walls" unique_id=1556625670]
 transform = Transform3D(-4.371139e-08, -1, 4.371139e-08, 0, -4.371139e-08, -1, 1, -4.371139e-08, 1.9106855e-15, -7.5, 3.25, 0)
 use_collision = true
 size = Vector3(15, 0.5, 5)
-material = ExtResource("1_c8ljk")
+material = ExtResource("1_70i4t")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1570581456]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015377998, 0.49686885, 0.030143201)
 size = Vector3(15, 0.5, 15)
-material = ExtResource("1_c8ljk")
+material = ExtResource("1_70i4t")
 
 [node name="Player" parent="." unique_id=575900600 instance=ExtResource("2_sry3f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2736804, 0)

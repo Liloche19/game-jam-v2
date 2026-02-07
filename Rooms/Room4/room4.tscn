@@ -3,15 +3,33 @@
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="1_bmo2m"]
 [ext_resource type="Material" path="res://Ressources/Textures/Tiles107/Tiles107_1K-PNG.tres" id="1_giymt"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_raca0"]
-size = Vector3(20, 5, 0.5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_g22s4"]
+size = Vector3(50, 30, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kdbpy"]
 material = ExtResource("1_giymt")
 size = Vector3(20, 5, 0.5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_unxns"]
+size = Vector3(50, 20, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vg8s8"]
+size = Vector3(50, 20, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_raca0"]
+size = Vector3(20, 5, 0.5)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_kdbpy"]
 size = Vector3(20, 0, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_giymt"]
+size = Vector3(1, 0.5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2i56x"]
+size = Vector3(1.5, 0.5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oyfub"]
+size = Vector3(20, 0, 15)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h8pmr"]
 
@@ -28,23 +46,23 @@ sky = SubResource("Sky_6em4c")
 
 [node name="ZCollision" type="CollisionShape3D" parent="Mur" unique_id=125188543]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
-shape = SubResource("BoxShape3D_raca0")
+shape = SubResource("BoxShape3D_g22s4")
 
 [node name="ZMesh" type="MeshInstance3D" parent="Mur" unique_id=254505174]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
 mesh = SubResource("BoxMesh_kdbpy")
 
 [node name="xCollision" type="CollisionShape3D" parent="Mur" unique_id=1089955639]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 2.5, 0)
-shape = SubResource("BoxShape3D_raca0")
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 7.5625734, -7.077422)
+shape = SubResource("BoxShape3D_unxns")
 
 [node name="xMesh" type="MeshInstance3D" parent="Mur" unique_id=124824528]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 2.5, 0)
 mesh = SubResource("BoxMesh_kdbpy")
 
 [node name="-xCollision" type="CollisionShape3D" parent="Mur" unique_id=1340922681]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10, 2.5, 0)
-shape = SubResource("BoxShape3D_raca0")
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10, 10.473776, -9.734035)
+shape = SubResource("BoxShape3D_vg8s8")
 
 [node name="-xMesh" type="MeshInstance3D" parent="Mur" unique_id=2033118561]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10, 2.5, 0)
@@ -62,6 +80,30 @@ mesh = SubResource("BoxMesh_kdbpy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56799316, 0, -0.5040283)
 shape = SubResource("BoxShape3D_kdbpy")
 
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mur" unique_id=1684041433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.182238, 1.0895429, -9.717671)
+shape = SubResource("BoxShape3D_giymt")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Mur" unique_id=1551700294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1271305, 2.9580226, -9.717671)
+shape = SubResource("BoxShape3D_giymt")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Mur" unique_id=33926597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.705171, 3.9194865, -9.717671)
+shape = SubResource("BoxShape3D_giymt")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Mur" unique_id=26999016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9499397, -9.718)
+shape = SubResource("BoxShape3D_2i56x")
+
+[node name="Floor colision2" type="CollisionShape3D" parent="Mur" unique_id=76466334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.034467697, 5.0020704, -17.379976)
+shape = SubResource("BoxShape3D_oyfub")
+
+[node name="-ZCollision2" type="CollisionShape3D" parent="Mur" unique_id=101602966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.114687, -29.759472)
+shape = SubResource("BoxShape3D_raca0")
+
 [node name="Player" parent="." unique_id=575900600 instance=ExtResource("1_bmo2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8550627, 0)
 
@@ -77,3 +119,28 @@ transform = Transform3D(0.4020863, 0.5222281, -0.7520668, -0.15375094, 0.848238,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 size = Vector3(20, 0.5, 20)
 material = ExtResource("1_giymt")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Walls" unique_id=341897675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.767675, -19.851933)
+size = Vector3(20, 0.5, 20)
+material = ExtResource("1_giymt")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=928397112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7108018, 4, -9.748)
+text = "Can"
+font_size = 96
+
+[node name="Label3D2" type="Label3D" parent="." unique_id=2100775560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1137056, 3, -9.748)
+text = "You"
+font_size = 96
+
+[node name="Label3D3" type="Label3D" parent="." unique_id=909650738]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -9.748)
+text = "Follow"
+font_size = 96
+
+[node name="Label3D4" type="Label3D" parent="." unique_id=595301792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.169709, 1, -9.748)
+text = "Me?"
+font_size = 96

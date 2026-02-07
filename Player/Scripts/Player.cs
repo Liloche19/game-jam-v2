@@ -3,10 +3,10 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] private RayCast3D _rayCast;
+	[Export] private RayCast3D _rayCast;
 
 	public float Speed = 5.0f;
-	public float JumpVelocity = 4.5f;
+	public float JumpVelocity = 6.5f;
 
 	// Sensibilité de la souris (ajustable dans l'inspecteur)
 	public float MouseSensitivity = 0.003f;
@@ -81,30 +81,30 @@ public partial class Player : CharacterBody3D
 	}
 
 	public override void _Input(InputEvent @event)
-    {
-        // On vérifie si c'est un clic gauche
-        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
-        {
-            GD.Print("click !");
-            CheckInteraction();
-        }
-    }
+	{
+		// On vérifie si c'est un clic gauche
+		if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
+		{
+			GD.Print("click !");
+			CheckInteraction();
+		}
+	}
 
-    private void CheckInteraction()
-    {
-        if (_rayCast.IsColliding())
-        {
-            // On récupère l'objet touché
-            var collider = _rayCast.GetCollider();
+	private void CheckInteraction()
+	{
+		if (_rayCast.IsColliding())
+		{
+			// On récupère l'objet touché
+			var collider = _rayCast.GetCollider();
 
-            GD.Print("élément touché récupéré !");
-            GD.Print($"Touché : {((Node)collider).Name} | Type : {collider.GetType().Name}");
-            // On vérifie si cet objet implémente notre interface
-            if (collider is IInteractable interactable)
-            {
-                GD.Print("appel de l'interaction !");
-                interactable.Interact();
-            }
-        }
-    }
+			GD.Print("élément touché récupéré !");
+			GD.Print($"Touché : {((Node)collider).Name} | Type : {collider.GetType().Name}");
+			// On vérifie si cet objet implémente notre interface
+			if (collider is IInteractable interactable)
+			{
+				GD.Print("appel de l'interaction !");
+				interactable.Interact();
+			}
+		}
+	}
 }
