@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="1_k3p1s"]
 [ext_resource type="FontFile" uid="uid://cmebdayqyby1k" path="res://Ressources/Models/BloodDrainer-BL5ow.otf" id="3_65vop"]
 [ext_resource type="Script" uid="uid://c7rigoelxo50j" path="res://Rooms/Room5/Scripts/EndButton.cs" id="3_if8tg"]
+[ext_resource type="PackedScene" uid="uid://bb2n737wb48ph" path="res://Ressources/Images/corpse.glb" id="6_jo4fa"]
+[ext_resource type="PackedScene" uid="uid://bhdrrpsam0w7o" path="res://Ressources/Images/jason_voorhees_machete_split_animation.glb" id="7_a4yvn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxh6i"]
 albedo_texture = ExtResource("1_genp8")
@@ -75,6 +77,12 @@ sky_material = SubResource("ProceduralSkyMaterial_dxu6y")
 [sub_resource type="Environment" id="Environment_genp8"]
 background_mode = 2
 sky = SubResource("Sky_fj7yv")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4yvn"]
+size = Vector3(1, 1.053833, 1.5620117)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jo4fa"]
+size = Vector3(1, 2.0089111, 1.6669922)
 
 [node name="FinalMaze" type="Node3D" unique_id=1914100392]
 
@@ -699,3 +707,23 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.76
 modulate = Color(1, 0, 0, 1)
 text = "Don't forget look back "
 font = ExtResource("3_65vop")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=305773957]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=472322119]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=330747260]
+
+[node name="Sketchfab_Scene" parent="StaticBody3D" unique_id=139126159 instance=ExtResource("6_jo4fa")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.444568, 0.09051055, -13.152155)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/Sketchfab_Scene" unique_id=1604338449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.026916504, 0.28100586)
+shape = SubResource("BoxShape3D_a4yvn")
+
+[node name="Sketchfab_Scene" parent="." unique_id=605314837 instance=ExtResource("7_a4yvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.502016, 0.17457259, -12.44288)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene" unique_id=1571561265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.987502, 0.25488186)
+shape = SubResource("BoxShape3D_jo4fa")
