@@ -3,20 +3,73 @@
 [ext_resource type="Script" uid="uid://cptj8ew4gqisc" path="res://Player.cs" id="1_4flbx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_onrkg"]
+radius = 0.25
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_i3pqv"]
+radius = 0.25
+height = 1.3
 
-[node name="Player" type="CharacterBody3D" unique_id=575900600]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4flbx"]
+albedo_color = Color(1, 0.99215686, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_onrkg"]
+radius = 0.25
+height = 1.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3pqv"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="Player" type="CharacterBody3D" unique_id=575900600 node_paths=PackedStringArray("_rayCast")]
 script = ExtResource("1_4flbx")
+_rayCast = NodePath("Camera3D/RayCast3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=829310207]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44862986, 0)
 shape = SubResource("CapsuleShape3D_onrkg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1208247378]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45764995, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8983574, 0)
 mesh = SubResource("CapsuleMesh_i3pqv")
+surface_material_override/0 = SubResource("StandardMaterial3D_4flbx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1559174253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09717995, 0)
+mesh = SubResource("CapsuleMesh_onrkg")
+surface_material_override/0 = SubResource("StandardMaterial3D_i3pqv")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1565117172]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88034797, 0)
 current = true
+fov = 90.6
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D" unique_id=1945033567]
+target_position = Vector3(0, 0, -4)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2140367281]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer" unique_id=1098000366]
+anchors_preset = -1
+anchor_left = -0.96875
+anchor_top = -0.9058642
+anchor_right = 0.013020833
+anchor_bottom = 0.057642054
+offset_left = 1116.0
+offset_top = 587.0
+offset_right = 1136.0
+offset_bottom = 610.64795
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/CenterContainer" unique_id=357007080]
+custom_minimum_size = Vector2(2, 16)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 1, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/CenterContainer" unique_id=1871436899]
+custom_minimum_size = Vector2(16, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 1, 0, 1)

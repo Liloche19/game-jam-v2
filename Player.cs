@@ -3,15 +3,17 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
+    [Export] private RayCast3D _rayCast;
+
 	public float Speed = 5.0f;
 	public float JumpVelocity = 4.5f;
-	
+
 	// Sensibilité de la souris (ajustable dans l'inspecteur)
 	public float MouseSensitivity = 0.003f;
 
 	// Référence à la caméra
 	private Camera3D _camera;
-	
+
 	public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public override void _Ready()
@@ -40,7 +42,7 @@ public partial class Player : CharacterBody3D
 			cameraRot.X = Mathf.Clamp(cameraRot.X, Mathf.DegToRad(-90), Mathf.DegToRad(90));
 			_camera.Rotation = cameraRot;
 		}
-		
+
 		// Permettre de quitter proprement avec Echap
 		if (Input.IsActionJustPressed("ui_cancel"))
 		{
@@ -59,7 +61,7 @@ public partial class Player : CharacterBody3D
 			velocity.Y = JumpVelocity;
 
 		Vector2 inputDir = Input.GetVector("Gauche", "Droite", "Avancer", "Reculer");
-		
+
 		// Note importante : On utilise maintenant la direction locale du joueur
 		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
@@ -77,4 +79,29 @@ public partial class Player : CharacterBody3D
 		Velocity = velocity;
 		MoveAndSlide();
 	}
+
+	public override void _Input(InputEvent @event)
+    {
+        // On vérifie si c'est un clic gauche
+        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
+        {
+            GD.Print("click !");
+            CheckInteraction();
+        }
+    }
+
+    private void CheckInteraction()
+    {
+        if (_rayCast.IsColliding())
+        {
+            // On récupère l'objet touché
+            var collider = _rayCast.GetCollider();
+
+            // On vérifie si cet objet implémente notre interface
+            if (collider is IInteractable interactable)
+            {
+                interactable.Interact();
+            }
+        }
+    }
 }
