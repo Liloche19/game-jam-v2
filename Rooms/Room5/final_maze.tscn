@@ -510,6 +510,7 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D" unique_id=572538938]
 transform = Transform3D(-4.371139e-08, 0, -1.0000001, 0, 1, 0, 1, 0, -4.3711392e-08, -10.817171, 1.841485, 0.06960794)
+modulate = Color(1, 0, 0, 1)
 text = "Welcome in the last room.
 You need to find the exit !
 "
@@ -529,6 +530,7 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D2" unique_id=550923761]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.782565, 1.969717, 4.7678556)
+modulate = Color(1, 0, 0, 1)
 text = "Can you follow you idea ?
 "
 font = ExtResource("3_65vop")
