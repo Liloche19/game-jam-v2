@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://csj6e7yyb3bdl" path="res://Ressources/Textures/PaintedPlaster013/Grass002_1K-JPG_Color.jpg" id="1_dxu6y"]
 [ext_resource type="Texture2D" uid="uid://cviatcw74w0aj" path="res://Ressources/Textures/PaintedPlaster013/PavingStones139_1K-JPG_Color.jpg" id="1_genp8"]
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="1_k3p1s"]
+[ext_resource type="FontFile" uid="uid://cmebdayqyby1k" path="res://Ressources/Models/BloodDrainer-BL5ow.otf" id="3_65vop"]
 [ext_resource type="Script" uid="uid://c7rigoelxo50j" path="res://Rooms/Room5/Scripts/EndButton.cs" id="3_if8tg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxh6i"]
@@ -419,7 +420,7 @@ material_override = SubResource("StandardMaterial3D_nmhjf")
 mesh = SubResource("BoxMesh_genp8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MazeWalls/Wall_Valid/StaticBody3D30" unique_id=1792335302]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12.439996, 1.2707865, -9.864103)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 15.101808, 1.2707865, -9.864103)
 shape = SubResource("BoxShape3D_q8vn8")
 
 [node name="StaticBody3D31" type="StaticBody3D" parent="MazeWalls/Wall_Valid" unique_id=1797056286]
@@ -490,7 +491,7 @@ material_override = SubResource("StandardMaterial3D_ejx2o")
 mesh = SubResource("BoxMesh_m1mym")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MazeWalls/Wall_AREA/Wall_Right" unique_id=1471158372]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011780183, 0.13801289, 8.798148)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011780186, 0.13801289, 8.871728)
 shape = SubResource("BoxShape3D_oj6sr")
 
 [node name="Wall_Fake" type="Node3D" parent="MazeWalls" unique_id=1743309593]
@@ -509,9 +510,11 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D" unique_id=572538938]
 transform = Transform3D(-4.371139e-08, 0, -1.0000001, 0, 1, 0, 1, 0, -4.3711392e-08, -10.817171, 1.841485, 0.06960794)
+modulate = Color(1, 0, 0, 1)
 text = "Welcome in the last room.
 You need to find the exit !
 "
+font = ExtResource("3_65vop")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="MazeWalls/Wall_Fake" unique_id=1333232287]
 
@@ -527,8 +530,10 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D2" unique_id=550923761]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.782565, 1.969717, 4.7678556)
-text = "Can you follow you idea ? 
+modulate = Color(1, 0, 0, 1)
+text = "Can you follow your idea ? 
 "
+font = ExtResource("3_65vop")
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="MazeWalls/Wall_Fake" unique_id=1993966519]
 
@@ -544,7 +549,9 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D3" unique_id=142827148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.904882, 1.841485, -9.756899)
+modulate = Color(1, 0, 0, 1)
 text = "Well Played ! you are the best !"
+font = ExtResource("3_65vop")
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="MazeWalls/Wall_Fake" unique_id=1344058137]
 
@@ -560,18 +567,24 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D4" unique_id=1754643709]
 transform = Transform3D(-1, 0, -8.7422784e-08, 0, 1, 0, 8.742278e-08, 0, -1.0000001, -0.031243324, 1.841485, 4.4599686)
+modulate = Color(1, 0, 0, 1)
 text = "WOW ! You are very smart.
 "
+font = ExtResource("3_65vop")
 
 [node name="Welcome2" type="Label3D" parent="MazeWalls" unique_id=914881227]
 transform = Transform3D(-4.371139e-08, 0, -1.0000002, 0, 1, 0, 1, 0, -4.37114e-08, 14.632916, 2.0791285, -7.5584097)
+modulate = Color(1, 0, 0, 1)
 text = "Well played ! you finished this room."
+font = ExtResource("3_65vop")
 
 [node name="Welcome" type="Label3D" parent="MazeWalls" unique_id=536555213]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 10.150936, 2.1345048, -14.580809)
+modulate = Color(1, 0, 0, 1)
 text = "HAHAHAHAHA
 You have been trolled !
 "
+font = ExtResource("3_65vop")
 
 [node name="Exit" type="Area3D" parent="." unique_id=337184212]
 
@@ -600,3 +613,88 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=477314712]
 environment = SubResource("Environment_genp8")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1556539342]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.9026933, 2.1709998, -12.987713)
+modulate = Color(1, 0.050000012, 0.050000012, 1)
+text = "What a shame
+"
+font = ExtResource("3_65vop")
+
+[node name="Label3D2" type="Label3D" parent="." unique_id=1308429129]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.695837, 0.48544836, 3.926059)
+text = "Number of forklift : 5"
+font_size = 14
+
+[node name="Label3D3" type="Label3D" parent="." unique_id=480600655]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10.83751, 1.946234, 4.750432)
+modulate = Color(1, 0, 0, 1)
+text = "Be careful of the walls"
+font = ExtResource("3_65vop")
+
+[node name="Label3D4" type="Label3D" parent="." unique_id=68266895]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10.942726, 2.0207603, -4.6225567)
+modulate = Color(0.99519295, 0.050553918, 3.85046e-07, 1)
+text = "You are not alone here"
+font = ExtResource("3_65vop")
+
+[node name="Label3D5" type="Label3D" parent="." unique_id=1839431115]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1950445, 1.9406321, -14.539211)
+modulate = Color(1, 0.029999971, 0.029999971, 1)
+text = "AHAHAHAHAHA"
+font = ExtResource("3_65vop")
+
+[node name="Label3D6" type="Label3D" parent="." unique_id=1313645344]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -7.543366, 1.8923991, 12.204875)
+modulate = Color(1, 0, 0, 1)
+text = "I SEE YOU"
+font = ExtResource("3_65vop")
+
+[node name="Label3D7" type="Label3D" parent="." unique_id=538681051]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.571082, 1.9217086, 7.278108)
+modulate = Color(1, 0.04000002, 0.04000002, 1)
+text = "No you are stucked"
+font = ExtResource("3_65vop")
+
+[node name="Label3D8" type="Label3D" parent="." unique_id=1319908625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9797902, 1.9615191, -2.1842117)
+modulate = Color(1, 0.01999998, 0.01999998, 1)
+text = "Nobody can escpe this room"
+font = ExtResource("3_65vop")
+
+[node name="Label3D9" type="Label3D" parent="." unique_id=2130100988]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -8.416019, 1.8945376, 4.494314)
+modulate = Color(1, 0.01999998, 0.01999998, 1)
+text = "Here there are many death"
+font = ExtResource("3_65vop")
+
+[node name="Label3D10" type="Label3D" parent="." unique_id=230467470]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 14.6643715, 1.8399723, 12.204875)
+modulate = Color(1, 0, 0, 1)
+text = "I SEE YOU"
+font = ExtResource("3_65vop")
+
+[node name="Label3D11" type="Label3D" parent="." unique_id=264984373]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0035906, 1.9406321, 9.679964)
+modulate = Color(1, 0.029999971, 0.029999971, 1)
+text = "AHAHAHAHAHA"
+font = ExtResource("3_65vop")
+
+[node name="Label3D12" type="Label3D" parent="." unique_id=1065674225]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.57545793, 1.8622015, 14.668645)
+modulate = Color(1, 0.050000012, 0.050000012, 1)
+text = "SHIIIT"
+font = ExtResource("3_65vop")
+font_size = 64
+
+[node name="Label3D13" type="Label3D" parent="." unique_id=502602185]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12.214227, 2.0629773, -2.4439096)
+modulate = Color(1, 0.029999971, 0.029999971, 1)
+text = "AHAHAHAHAHA"
+font = ExtResource("3_65vop")
+
+[node name="Label3D14" type="Label3D" parent="." unique_id=461172537]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.765832, 2.1951528, -2.4064822)
+modulate = Color(1, 0, 0, 1)
+text = "Don't forget look back "
+font = ExtResource("3_65vop")
