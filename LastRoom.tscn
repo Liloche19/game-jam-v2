@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://dnypkdxd0jxur"]
+
+[ext_resource type="Material" uid="uid://dd30q744t25j7" path="res://TilesMaterial.tres" id="1_c8ljk"]
+[ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://player.tscn" id="2_sry3f"]
+[ext_resource type="Script" uid="uid://bq2bwku6oh0bw" path="res://PressurePlate.cs" id="3_sry3f"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n502b"]
+size = Vector3(16.310791, 0.2, 16.37622)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8e036"]
+
+[sub_resource type="Sky" id="Sky_6em4c"]
+sky_material = SubResource("ProceduralSkyMaterial_8e036")
+
+[sub_resource type="Environment" id="Environment_vk7w7"]
+background_mode = 2
+sky = SubResource("Sky_6em4c")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_d4t6d"]
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7s8h5"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lvsuc"]
+material = SubResource("StandardMaterial3D_7s8h5")
+height = 0.1
+
+[node name="Room1" type="Node3D" unique_id=938497919]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=2077866088]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1724185343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56799316, 0, -0.5040283)
+shape = SubResource("BoxShape3D_n502b")
+
+[node name="Walls" type="Node3D" parent="." unique_id=873011485]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=1883495696]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 3.25, -7.291)
+use_collision = true
+size = Vector3(15, 0.5, 5)
+material = ExtResource("1_c8ljk")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Walls" unique_id=170729838]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 3.25, 7.716246)
+use_collision = true
+size = Vector3(15, 0.5, 5)
+material = ExtResource("1_c8ljk")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Walls" unique_id=773786819]
+transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, -1, 1, -4.371139e-08, -4.371139e-08, 7.5, 3.25, 0)
+use_collision = true
+size = Vector3(15, 0.5, 5)
+material = ExtResource("1_c8ljk")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Walls" unique_id=1556625670]
+transform = Transform3D(-4.371139e-08, -1, 4.371139e-08, 0, -4.371139e-08, -1, 1, -4.371139e-08, 1.9106855e-15, -7.5, 3.25, 0)
+use_collision = true
+size = Vector3(15, 0.5, 5)
+material = ExtResource("1_c8ljk")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1570581456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015377998, 0.49686885, 0.030143201)
+size = Vector3(15, 0.5, 15)
+material = ExtResource("1_c8ljk")
+
+[node name="Player" parent="." unique_id=575900600 instance=ExtResource("2_sry3f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2736804, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2119423671]
+transform = Transform3D(0.4020863, 0.5222281, -0.7520668, -0.15375094, 0.848238, 0.50680673, 0.90260035, -0.08814906, 0.42135787, 0, 10.291347, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1329254903]
+environment = SubResource("Environment_vk7w7")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=204391066]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0024533272, 3.4374268, -6.9934993)
+text = "Alright, I admit it, you're a genius.
+But before I let you go, one last question.
+How many forklifts did you see?"
+font_size = 96
+
+[node name="PressurePlate" type="Area3D" parent="." unique_id=1677470843 node_paths=PackedStringArray("UiLayer", "InputField", "Floor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8393121, -4.694751)
+script = ExtResource("3_sry3f")
+UiLayer = NodePath("CanvasLayer")
+InputField = NodePath("CanvasLayer/CenterContainer/VBoxContainer/LineEdit")
+Floor = NodePath("../Floor/CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PressurePlate" unique_id=1961837847]
+shape = SubResource("CylinderShape3D_d4t6d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PressurePlate" unique_id=641244226]
+mesh = SubResource("CylinderMesh_lvsuc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="PressurePlate" unique_id=1206218446]
+visible = false
+
+[node name="CenterContainer" type="CenterContainer" parent="PressurePlate/CanvasLayer" unique_id=419378892]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PressurePlate/CanvasLayer/CenterContainer" unique_id=1467907219]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PressurePlate/CanvasLayer/CenterContainer/VBoxContainer" unique_id=403458031]
+layout_mode = 2
+text = "Enter number of forklifts"
+
+[node name="LineEdit" type="LineEdit" parent="PressurePlate/CanvasLayer/CenterContainer/VBoxContainer" unique_id=193935168]
+layout_mode = 2
