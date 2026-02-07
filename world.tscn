@@ -180,7 +180,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 shape = SubResource("BoxShape3D_ic0uy")
 
 [node name="Player" parent="." unique_id=1847063785 instance=ExtResource("1_f3sb7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4219327, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7320534, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1370358997]
 transform = Transform3D(1, 0, 0, 0, 0.2601169, 0.9655771, 0, -0.9655771, 0.2601169, 0, 10.610863, -0.98563194)
