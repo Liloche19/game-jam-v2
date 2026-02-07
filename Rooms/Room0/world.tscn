@@ -14,6 +14,8 @@
 [ext_resource type="ArrayMesh" uid="uid://c4djpoi8u2oyg" path="res://Asset_Factiry/kenney_conveyor-kit/Models/OBJ format/conveyor-bars-fence.obj" id="11_u3bse"]
 [ext_resource type="ArrayMesh" uid="uid://dt6b2t6v0tjmy" path="res://Asset_Factiry/kenney_conveyor-kit/Models/OBJ format/cover-stripe-hopper.obj" id="12_ks3ea"]
 [ext_resource type="ArrayMesh" uid="uid://dc1a31hw8jyeb" path="res://Asset_Factiry/kenney_conveyor-kit/Models/OBJ format/box-wide.obj" id="13_b26hj"]
+[ext_resource type="Material" uid="uid://cgv2p3x8xupmd" path="res://Ressources/Textures/WoodFloor051/WoodFloor051_1K-JPG.tres" id="14_k1e2v"]
+[ext_resource type="Texture2D" uid="uid://dl07gndjsaxe7" path="res://Ressources/Images/Tamarin.jpg" id="15_aikxm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
 albedo_texture = ExtResource("1_tlwt5")
@@ -80,6 +82,14 @@ size = Vector3(1.1942139, 2.0541992, 5.343872)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2ismv"]
 size = Vector3(1.9047852, 1.3125, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j0ecx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n77sb"]
+albedo_texture = ExtResource("15_aikxm")
+
+[sub_resource type="QuadMesh" id="QuadMesh_0neyr"]
+material = SubResource("StandardMaterial3D_n77sb")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 
@@ -370,6 +380,17 @@ mesh = ExtResource("13_b26hj")
 [node name="Label3D" type="Label3D" parent="FactoryRoom" unique_id=1549000329]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3521103, -5.8159523)
 text = "Jump on the button ?"
+
+[node name="PictureFrame" type="StaticBody3D" parent="FactoryRoom" unique_id=1298893905]
+
+[node name="Frame" type="MeshInstance3D" parent="FactoryRoom/PictureFrame" unique_id=1744966298]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.05, -0.0324426, 2.0964062, -5.8255844)
+material_override = ExtResource("14_k1e2v")
+mesh = SubResource("BoxMesh_j0ecx")
+
+[node name="Picture" type="MeshInstance3D" parent="FactoryRoom/PictureFrame" unique_id=2015623781]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.034493864, 2.1028159, -5.791873)
+mesh = SubResource("QuadMesh_0neyr")
 
 [node name="Player" parent="." unique_id=1847063785 instance=ExtResource("1_f3sb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7320534, 0)
