@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dkffolmnrmyrm"]
+
+[ext_resource type="Texture2D" uid="uid://bwimg1dx1st2c" path="res://Ressources/Textures/Tiles107/Tiles107_1K-PNG_Color.png" id="1_yvfjr"]
+
+[resource]
+albedo_texture = ExtResource("1_yvfjr")
+normal_enabled = true
+ao_enabled = true
+heightmap_enabled = true
+uv1_scale = Vector3(6, 6, 1)
+grow_amount = -1.992
