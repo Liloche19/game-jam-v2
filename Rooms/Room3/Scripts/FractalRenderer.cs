@@ -32,37 +32,58 @@ namespace FractalGenerator
 
 		public override void _Ready()
 		{
-		// Find the FractalDisplay mesh in the scene (should be in room.tscn)
-		_displayMesh = GetParent().FindChild("FractalDisplay", true, false) as MeshInstance3D;
-		
-		if (_displayMesh == null)
-		{
-			// Fallback: Create display mesh if not found in scene
-			GD.PrintErr("FractalRenderer: FractalDisplay not found in scene, creating new mesh");
-			_displayMesh = new MeshInstance3D();
-			AddChild(_displayMesh);
+			try
+			{
+				GD.Print("FractalRenderer: Starting _Ready...");
+				
+				// Find the FractalDisplay mesh in the scene (should be in room.tscn)
+				GD.Print("FractalRenderer: Looking for FractalDisplay mesh...");
+				_displayMesh = GetParent().FindChild("FractalDisplay", true, false) as MeshInstance3D;
+			
+				if (_displayMesh == null)
+				{
+					// Fallback: Create display mesh if not found in scene
+					GD.PrintErr("FractalRenderer: FractalDisplay not found in scene, creating new mesh");
+					_displayMesh = new MeshInstance3D();
+					AddChild(_displayMesh);
 
-			// Create a plane mesh to display the fractal
-			PlaneMesh planeMesh = new PlaneMesh();
-			planeMesh.Size = new Vector2(10, 7.5f); // 4:3 aspect ratio
-			_displayMesh.Mesh = planeMesh;
-		}
-			StandardMaterial3D material = new StandardMaterial3D();
-			material.TextureFilter = BaseMaterial3D.TextureFilterEnum.Nearest;
-			_displayMesh.SetSurfaceOverrideMaterial(0, material);
+					// Create a plane mesh to display the fractal
+					PlaneMesh planeMesh = new PlaneMesh();
+					planeMesh.Size = new Vector2(10, 7.5f); // 4:3 aspect ratio
+					_displayMesh.Mesh = planeMesh;
+				}
+				else
+				{
+					GD.Print("FractalRenderer: Found FractalDisplay mesh");
+				}
+				
+				GD.Print("FractalRenderer: Creating material...");
+				StandardMaterial3D material = new StandardMaterial3D();
+				material.TextureFilter = BaseMaterial3D.TextureFilterEnum.Nearest;
+				_displayMesh.SetSurfaceOverrideMaterial(0, material);
 
-			// Initialize with Julia fractal (only fractal type now)
-			_currentFractal = new JuliaFractal();
-			_currentFractal.ViewportSize = new Complex(TextureWidth, TextureHeight);
+				// Initialize with Julia fractal (only fractal type now)
+				GD.Print("FractalRenderer: Creating Julia fractal...");
+				_currentFractal = new JuliaFractal();
+				_currentFractal.ViewportSize = new Complex(TextureWidth, TextureHeight);
 
-			// Create initial texture (used for CPU rendering fallback)
-			_fractalImage = Image.CreateEmpty(TextureWidth, TextureHeight, false, Image.Format.Rgba8);
-			_fractalTexture = ImageTexture.CreateFromImage(_fractalImage);
+				// Create initial texture (used for CPU rendering fallback)
+				GD.Print("FractalRenderer: Creating texture...");
+				_fractalImage = Image.CreateEmpty(TextureWidth, TextureHeight, false, Image.Format.Rgba8);
+				_fractalTexture = ImageTexture.CreateFromImage(_fractalImage);
 
-			// Apply texture to mesh material as fallback
-			material.AlbedoTexture = _fractalTexture;
+				// Apply texture to mesh material as fallback
+				material.AlbedoTexture = _fractalTexture;
 
-			MarkForUpdate();
+				GD.Print("FractalRenderer: Marking for update...");
+				MarkForUpdate();
+				GD.Print("FractalRenderer: _Ready complete!");
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr($"FractalRenderer._Ready exception: {e}");
+				GD.PrintErr($"Stack trace: {e.StackTrace}");
+			}
 		}
 
 		/// <summary>
@@ -154,13 +175,12 @@ namespace FractalGenerator
 			_cachedShaderMaterial.SetShaderParameter("max_iterations", _currentFractal.MaxIterations);
 			_cachedShaderMaterial.SetShaderParameter("color_range", _currentFractal.ColorRange);
 			_cachedShaderMaterial.SetShaderParameter("color_shift", _currentFractal.ColorShift);
-			_cachedShaderMaterial.SetShaderParameter("fractal_type", (int)_currentFractal.Type);
 
-			// For Julia set, pass the Julia constant
+			// For Julia set, pass the shift parameters
 			if (_currentFractal is JuliaFractal julia)
 			{
-				_cachedShaderMaterial.SetShaderParameter("julia_c_real", julia.JuliaConstant.Real);
-				_cachedShaderMaterial.SetShaderParameter("julia_c_imag", julia.JuliaConstant.Imaginary);
+				_cachedShaderMaterial.SetShaderParameter("shift_real", julia.ShiftParameter.Real);
+				_cachedShaderMaterial.SetShaderParameter("shift_imag", julia.ShiftParameter.Imaginary);
 			}
 
 			// Apply shader material to mesh

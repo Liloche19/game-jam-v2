@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="game-jam-v2"
-run/main_scene="uid://c8cmuhblnna2s"
+run/main_scene="res://Rooms/Room3/room.tscn"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

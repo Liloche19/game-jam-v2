@@ -35,9 +35,15 @@ namespace FractalGenerator.UI
 	private SpinBox _shiftRealSpinBox;
 	private SpinBox _shiftImagSpinBox;
 	private Label _winStatusLabel;
+	private bool _updatingUI = false; // Prevent feedback loops
 
 		public override void _Ready()
 		{
+		try
+		{
+			GD.Print("FractalUI: Starting _Ready...");
+			
+			GD.Print("FractalUI: Looking for FractalRenderer...");
 			_fractalRenderer = GetParent<Node>().FindChild("FractalRenderer", true, false) as FractalRenderer;
 
 			if (_fractalRenderer == null)
@@ -45,6 +51,8 @@ namespace FractalGenerator.UI
 				GD.PrintErr("FractalUI: Could not find FractalRenderer node");
 				return;
 			}
+			
+			GD.Print("FractalUI: Found FractalRenderer, creating UI panel...");
 
 			// Create UI Panel
 			PanelContainer mainPanel = new PanelContainer();
@@ -55,6 +63,8 @@ namespace FractalGenerator.UI
 			// Create main container
 			VBoxContainer mainContainer = new VBoxContainer();
 			mainPanel.AddChild(mainContainer);
+			
+			GD.Print("FractalUI: Creating title and labels...");
 
 			// Create title
 			Label titleLabel = new Label { Text = "Division by Zero Fractal" };
@@ -74,6 +84,8 @@ namespace FractalGenerator.UI
 
 			// Common Parameters
 			mainContainer.AddChild(new Label { Text = "Parameters:" });
+			
+			GD.Print("FractalUI: Creating parameter controls...");
 
 			// Max Iterations
 			mainContainer.AddChild(new Label { Text = "Max Iterations:" });
@@ -137,6 +149,8 @@ namespace FractalGenerator.UI
 			mainContainer.AddChild(_zoomSpinBox);
 
 			mainContainer.AddChild(new HSeparator());
+			
+			GD.Print("FractalUI: Creating shift parameter controls...");
 
 			// Shift Parameters (Division by Zero Parameters)
 			mainContainer.AddChild(new Label { Text = "Shift Parameter (Where Division by 0 Occurs):" });
@@ -163,11 +177,19 @@ namespace FractalGenerator.UI
 			resetButton.Pressed += OnResetPressed;
 			mainContainer.AddChild(resetButton);
 
+			GD.Print("FractalUI: Updating UI from fractal...");
 			UpdateUIFromFractal();
+			GD.Print("FractalUI: _Ready complete!");
 		}
-
-		private void OnFractalTypeChanged(long index)
+		catch (Exception e)
 		{
+			GD.PrintErr($"FractalUI._Ready exception: {e}");
+			GD.PrintErr($"Stack trace: {e.StackTrace}");
+		}
+	}
+
+	private void OnFractalTypeChanged(long index)
+	{
 			// No longer needed - only Julia fractal exists
 			_fractalRenderer.SetFractal(new JuliaFractal());
 			UpdateUIFromFractal();
@@ -255,7 +277,7 @@ namespace FractalGenerator.UI
 			_panYSpinBox.Value = fractal.CenterPosition.Imaginary;
 			_zoomSpinBox.Value = fractal.ZoomLevel;
 
-		\t\t// Update shift parameters (Julia only - always visible now)
+			// Update shift parameters (Julia only - always visible now)
 			if (fractal is JuliaFractal julia)
 			{
 				_shiftRealSpinBox.Value = julia.ShiftParameter.Real;
