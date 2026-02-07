@@ -1,4 +1,5 @@
 [gd_scene format=3 uid="uid://bjkrhhj5ugkby"]
+[ext_resource type="Texture2D" path="res://PaintedPlaster013_1K-JPG/PaintedPlaster013_1K-JPG_Color.jpg" id="1_plaster_color"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_v321d"]
 size = Vector3(10, 0.5, 10)
@@ -21,30 +22,51 @@ size = Vector3(10, 0.5, 10)
 [sub_resource type="PlaneMesh" id="PlaneMesh_FractalDisplay"]
 size = Vector2(8, 6)
 
+[sub_resource type="StandardMaterial3D" id="Material_Floor"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_Walls"]
+albedo_color = Color(0.8, 0.8, 0.8, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 4, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_Ceiling"]
+albedo_color = Color(0.9, 0.9, 0.9, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 2, 1)
+
 [node name="Room" type="Node3D" unique_id=2023136483]
 
 [node name="Floor" type="MeshInstance3D" parent="." unique_id=1703681600]
 mesh = SubResource("BoxMesh_v321d")
+material_override = SubResource("Material_Floor")
 
 [node name="NorthWall" type="MeshInstance3D" parent="." unique_id=993280168]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -5)
 mesh = SubResource("BoxMesh_North")
+material_override = SubResource("Material_Walls")
 
 [node name="SouthWall" type="MeshInstance3D" parent="." unique_id=1842893805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 5)
 mesh = SubResource("BoxMesh_South")
+material_override = SubResource("Material_Walls")
 
 [node name="EastWall" type="MeshInstance3D" parent="." unique_id=827482941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 0)
 mesh = SubResource("BoxMesh_East")
+material_override = SubResource("Material_Walls")
 
 [node name="WestWall" type="MeshInstance3D" parent="." unique_id=107820571]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, 0)
 mesh = SubResource("BoxMesh_West")
+material_override = SubResource("Material_Walls")
 
 [node name="Ceiling" type="MeshInstance3D" parent="." unique_id=2076982776]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 mesh = SubResource("BoxMesh_Ceiling")
+material_override = SubResource("Material_Ceiling")
 
 [node name="FractalDisplay" type="MeshInstance3D" parent="." unique_id=1849842791]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 4, -4.5)
