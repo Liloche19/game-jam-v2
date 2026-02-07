@@ -97,9 +97,12 @@ public partial class Player : CharacterBody3D
             // On récupère l'objet touché
             var collider = _rayCast.GetCollider();
 
+            GD.Print("élément touché récupéré !");
+            GD.Print($"Touché : {((Node)collider).Name} | Type : {collider.GetType().Name}");
             // On vérifie si cet objet implémente notre interface
             if (collider is IInteractable interactable)
             {
+                GD.Print("appel de l'interaction !");
                 interactable.Interact();
             }
         }
