@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bp7e47cjdhbaw"
+path="res://.godot/imported/loungeChair.obj-052b103243cf512ed6772b8768411b9e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/loungeChair.obj-052b103243cf512ed6772b8768411b9e.mesh"]
+
+source_file="res://Ressources/Models/furniture/Models/OBJ format/loungeChair.obj"
+dest_files=["res://.godot/imported/loungeChair.obj-052b103243cf512ed6772b8768411b9e.mesh", "res://.godot/imported/loungeChair.obj-052b103243cf512ed6772b8768411b9e.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

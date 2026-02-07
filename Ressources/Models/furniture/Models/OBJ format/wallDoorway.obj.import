@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bxfrc384o3v4v"
+path="res://.godot/imported/wallDoorway.obj-af9164ab4803eba964dc78fffac9995d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wallDoorway.obj-af9164ab4803eba964dc78fffac9995d.mesh"]
+
+source_file="res://Ressources/Models/furniture/Models/OBJ format/wallDoorway.obj"
+dest_files=["res://.godot/imported/wallDoorway.obj-af9164ab4803eba964dc78fffac9995d.mesh", "res://.godot/imported/wallDoorway.obj-af9164ab4803eba964dc78fffac9995d.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
