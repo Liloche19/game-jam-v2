@@ -28,7 +28,7 @@ public partial class Minus : Area3D
         {
             Label.Text = value.ToString();
         }
-        if  (Floor != null && value == 65535)
-            Floor.QueueFree();
+        if  (Floor != null && value == 65533)
+            Floor.SetDeferred(CollisionShape3D.PropertyName.Disabled, true);
     }
 }

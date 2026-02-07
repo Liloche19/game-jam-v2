@@ -32,8 +32,11 @@ public partial class Label3d : Label3D
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_6em4c"]
 height = 0.001
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vk7w7"]
-albedo_color = Color(0, 0, 0, 1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_vk7w7"]
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_imxel"]
+height = 0.1
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8e036"]
 
@@ -79,7 +82,7 @@ size = Vector3(15, 0.5, 5)
 material = ExtResource("1_6em4c")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1570581456]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015377998, 0.49686885, 0.030143201)
 size = Vector3(15, 0.5, 15)
 material = ExtResource("1_6em4c")
 
@@ -101,10 +104,9 @@ Floor = NodePath("../../Floor/CollisionShape3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026572824, -1.3197689, -0.42329884)
 shape = SubResource("CylinderShape3D_6em4c")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Counter/Minus" unique_id=1632007949]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028480649, -1.3197689, -0.42329884)
-height = 0.1
-material = SubResource("StandardMaterial3D_vk7w7")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Counter/Minus" unique_id=1172499990]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.018307, -1.2683817, -0.43109512)
+mesh = SubResource("CylinderMesh_vk7w7")
 
 [node name="Plus" type="Area3D" parent="Counter" unique_id=1641720978 node_paths=PackedStringArray("Label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0848148, 2.0680473, -5.171859)
@@ -115,10 +117,9 @@ Label = NodePath("../Label3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.026572824, -1.3123841, -0.42329884)
 shape = SubResource("CylinderShape3D_6em4c")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Counter/Plus" unique_id=1143180627]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028480768, -1.3123841, -0.42329884)
-height = 0.1
-material = SubResource("StandardMaterial3D_vk7w7")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Counter/Plus" unique_id=1083746553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.032054186, -1.2750362, -0.4235487)
+mesh = SubResource("CylinderMesh_imxel")
 
 [node name="Player" parent="." unique_id=575900600 instance=ExtResource("3_8e036")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2736804, 0)
@@ -138,5 +139,6 @@ font_size = 64
 
 [node name="Label3D2" type="Label3D" parent="." unique_id=2082530627]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6120996, 1.2221668, -7.029736)
-text = "Note to self: 65535"
+text = "Note to self: (2^16)-2
+"
 font_size = 64
