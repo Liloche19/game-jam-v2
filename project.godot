@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="game-jam-v2"
-run/main_scene="uid://ctormkt8yjro6"
+run/main_scene="uid://cnf0pua73w08e"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
