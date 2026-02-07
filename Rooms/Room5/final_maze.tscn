@@ -547,7 +547,9 @@ disabled = true
 
 [node name="Welcome" type="Label3D" parent="MazeWalls/Wall_Fake/StaticBody3D3" unique_id=142827148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 9.904882, 1.841485, -9.756899)
+modulate = Color(1, 0, 0, 1)
 text = "Well Played ! you are the best !"
+font = ExtResource("3_65vop")
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="MazeWalls/Wall_Fake" unique_id=1344058137]
 
@@ -574,13 +576,9 @@ modulate = Color(1, 0, 0, 1)
 text = "Well played ! you finished this room."
 font = ExtResource("3_65vop")
 
-[node name="Welcome" type="Label3D" parent="MazeWalls" unique_id=536555213]
+[node name="Welcome3" type="Label3D" parent="MazeWalls" unique_id=1715075414]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 10.150936, 2.1345048, -14.580809)
 modulate = Color(1, 0, 0, 1)
-text = "Well played ! you finished this room."
-
-[node name="Welcome" type="Label3D" parent="MazeWalls" unique_id=536555213]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 10.150936, 2.1345048, -14.580809)
 text = "HAHAHAHAHA
 You have been trolled !
 "
@@ -673,6 +671,7 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 14.6
 modulate = Color(1, 0, 0, 1)
 text = "I SEE YOU"
 font = ExtResource("3_65vop")
+font_size = 64
 
 [node name="Label3D11" type="Label3D" parent="." unique_id=264984373]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0035906, 1.9406321, 9.679964)
