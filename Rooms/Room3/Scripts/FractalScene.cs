@@ -28,15 +28,15 @@ namespace FractalGenerator
 				GD.Print("FractalScene: Starting initialization...");
 				EnsureFractalInputBindings();
 				
-				// Find existing camera from Player node (don't create a new one)
-				_camera = GetNodeOrNull<Camera3D>("Player/Camera3D");
+				// Find the Player's Camera3D by searching the scene tree
+				_camera = GetTree().CurrentScene?.FindChild("Camera3D", true, false) as Camera3D;
 				if (_camera == null)
 				{
-					GD.PrintErr("FractalScene: Could not find Player Camera3D!");
+					GD.PrintErr("FractalScene: Could not find Camera3D in scene!");
 				}
 				else
 				{
-					GD.Print("FractalScene: Found player camera");
+					GD.Print("FractalScene: Found camera");
 				}
 
 			// Create fractal renderer
@@ -46,7 +46,7 @@ namespace FractalGenerator
 			_fractalRenderer.TextureWidth = 1600;
 			_fractalRenderer.TextureHeight = 1200;
 			// Prefer GPU rendering for responsiveness.
-			_fractalRenderer.UseGPURendering = true;
+			_fractalRenderer.UseGPURendering = false;
 			AddChild(_fractalRenderer);
 			GD.Print("FractalScene: FractalRenderer created");
 			
@@ -104,19 +104,29 @@ namespace FractalGenerator
 			if (_fractalRenderer == null) return;
 			
 			FractalBase fractal = _fractalRenderer.GetCurrentFractal();
-			if (fractal != null && fractal.DivisionByZeroOccurred && !_winTriggered)
-			{
-				_winTriggered = true;
-				DisableFloorCollisions();
-				// Reset the flag so we don't keep triggering
-				fractal.DivisionByZeroOccurred = false;
-			}
+		if (fractal == null) return;
+		
+		// For GPU rendering: Check if v parameter is in a range that causes visible division by zero
+		// For CPU rendering: Check the DivisionByZeroOccurred flag
+		bool divisionDetected = false;
+		
+		// Use CPU-detected flag for win condition (works for both CPU and GPU rendering when CPU verifies)
+		divisionDetected = fractal.DivisionByZeroOccurred;
+		
+		if (divisionDetected && !_winTriggered)
+		{
+			_winTriggered = true;
+			GD.Print("🎉 DIVISION BY ZERO ACHIEVED! YOU WIN! 🎉");
+			DisableFloorCollisions();
+			// Reset the flag so we don't keep triggering
+			fractal.DivisionByZeroOccurred = false;
 		}
+	}
 
-		/// <summary>
-		/// Handles keyboard input for interactive fractal exploration.
-		/// </summary>
-		private void HandleInput()
+	/// <summary>
+	/// Handles keyboard input for interactive fractal exploration.
+	/// </summary>
+	private void HandleInput()
 		{
 			if (_fractalRenderer == null) return;
 			

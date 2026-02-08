@@ -40,6 +40,8 @@ namespace FractalGenerator.UI
 	private bool _pendingCpuRender = false;
 	private bool _updatingUI = false; // Prevent feedback loops
 
+
+
 		public override void _Ready()
 		{
 		try
@@ -141,7 +143,7 @@ namespace FractalGenerator.UI
 			GD.Print("FractalUI: Creating v parameter controls...");
 
 			// v Parameters (Division by Zero Parameters)
-			mainContainer.AddChild(new Label { Text = "v Parameter (Where Division by 0 Occurs):" });
+			mainContainer.AddChild(new Label { Text = "Parameter:" });
 
 			mainContainer.AddChild(new Label { Text = "Real:" });
 			_vRealSpinBox = new SpinBox();

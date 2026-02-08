@@ -1,9 +1,10 @@
 // Godot 4 Fragment Shader for Division by Zero Julia Fractal
 // 
 // A rational Julia set that generates division by 0 as a win condition.
-// Uses the formula: z = (k / (z - x))^2 + v
+// Uses the formula: z = (k / (z - v))^2 + c
 // 
-// The game mechanic: Find parameters where division by 0 occurs during iteration!
+// The game mechanic: Find the v parameter where division by 0 occurs!
+// Division by zero happens when z equals v during iteration.
 
 shader_type spatial;
 render_mode unshaded;
@@ -19,11 +20,13 @@ uniform float tex_w = 800.0;
 uniform float tex_h = 600.0;
 
 // Division by Zero Julia set parameters
-// v is player-controlled, x and k are constants
+// v is the SINGULARITY (player-controlled) - where division by zero occurs!
+// c is a fixed attractor constant
+// k is a scale factor
 uniform float v_real = -0.4;
 uniform float v_imag = 0.6;
-uniform float x_real = 0.15;
-uniform float x_imag = -0.2;
+uniform float c_real = 0.15;
+uniform float c_imag = -0.2;
 uniform float k_value = 1.0;
 
 // ============================================================================
@@ -67,31 +70,30 @@ float complex_modulus(vec2 z) {
 // ============================================================================
 
 // Division by Zero Julia set iteration
-// Formula: z = (k / (z - x))^2 + v
-// Division by 0 occurs when z - x = 0 (THE WIN CONDITION!)
-int compute_division_julia(vec2 z, vec2 v, vec2 x, float k, out float smooth_value, out bool div_by_zero) {
+// Formula: z = (k / (z - v))^2 + x
+// Division by 0 occurs when z = v (THE WIN CONDITION!)
+// Returns negative value if division by zero detected
+int compute_division_julia(vec2 z, vec2 v, vec2 x, float k, out float smooth_value) {
 	int iterations = 0;
 	float max_modulus_sq = 10000.0; // Large escape radius for rational function
 	smooth_value = 0.0;
-	div_by_zero = false;
-	float division_threshold = 1e-6; // Threshold to detect near-division
-	
+	float division_threshold = 0.5e-2f; // Balanced threshold for GPU precision
+
 	while (complex_modulus_squared(z) < max_modulus_sq && iterations < max_iterations) {
-		// Compute z - x (the denominator)
-		vec2 denominator = complex_subtract(z, x);
+		// Compute z - v (the denominator - v is player-controlled singularity!)
+		vec2 denominator = complex_subtract(z, v);
 		float denominator_modulus = complex_modulus(denominator);
 		
-		// Check for division by 0
+		// Check for division by 0 (return NEGATIVE to signal division detected)
 		if (denominator_modulus < division_threshold) {
-			div_by_zero = true;
-			smooth_value = float(max_iterations) + 10.0; // Special value to mark as win
-			return iterations;
+			smooth_value = 999999.0; // Marker for debug - will show as magenta
+			return -1; // Return negative to signal division by zero
 		}
 		
-		// z = (k / (z - x))^2 + v
+		// z = (k / (z - v))^2 + x
 		vec2 k_complex = vec2(k, 0.0);
 		vec2 fraction = complex_divide(k_complex, denominator);
-		z = complex_add(complex_square(fraction), v);
+		z = complex_add(complex_square(fraction), x);
 		iterations++;
 	}
 	
@@ -126,10 +128,15 @@ vec3 hsv_to_rgb(vec3 hsv) {
 
 // Generate color from iteration count
 // Special handling for division by 0 (the win condition!)
-vec4 get_color(int iterations, float smooth_value, bool div_by_zero) {
-	// Division by 0 - WIN! Show bright red
-	if (div_by_zero) {
-		return vec4(1.0, 0.0, 0.0, 1.0); // Bright red for win condition
+vec4 get_color(int iterations, float smooth_value) {
+	// Division by 0 - WIN! Show bright red (negative iterations is marker)
+	if (iterations < 0) {
+		return vec4(1.0, 0.0, 0.0, 1.0); // Bright RED for win condition
+	}
+	
+	// DEBUG: Show magenta if smooth_value is marker value (very high)
+	if (smooth_value > float(max_iterations) * 2.0) {
+		return vec4(1.0, 0.0, 1.0, 1.0); // MAGENTA debug marker
 	}
 	
 	if (iterations == max_iterations) {
@@ -165,14 +172,15 @@ void fragment() {
 	// Compute division by zero Julia set
 	int iterations = 0;
 	float smooth_value = 0.0;
-	bool div_by_zero = false;
 	
-	vec2 v = vec2(v_real, v_imag);
-	vec2 x = vec2(x_real, x_imag);
-	iterations = compute_division_julia(complex_pos, v, x, k_value, smooth_value, div_by_zero);
+	vec2 v = vec2(v_real, v_imag); // Player-controlled singularity
+	vec2 x = vec2(c_real, c_imag); // Fixed Julia constant
 	
-	// Convert iterations to color (includes special handling for division by 0)
-	vec4 outcol = get_color(iterations, smooth_value, div_by_zero);
+	iterations = compute_division_julia(complex_pos, v, x, k_value, smooth_value);
+	
+	// Convert iterations to color (negative iterations = division by zero)
+	vec4 outcol = get_color(iterations, smooth_value);
+	
 	ALBEDO = outcol.rgb;
 	ALPHA = outcol.a;
 }

@@ -205,18 +205,53 @@ namespace FractalGenerator
 			_cachedShaderMaterial.SetShaderParameter("tex_w", (float)TextureWidth);
 			_cachedShaderMaterial.SetShaderParameter("tex_h", (float)TextureHeight);
 
-			// For Julia set, pass v, x, and k parameters
+			// For Julia set, pass v, c, and k parameters
 			if (_currentFractal is JuliaFractal julia)
 			{
 				_cachedShaderMaterial.SetShaderParameter("v_real", julia.VParameter.Real);
 				_cachedShaderMaterial.SetShaderParameter("v_imag", julia.VParameter.Imaginary);
-				_cachedShaderMaterial.SetShaderParameter("x_real", julia.ConstantX.Real);
-				_cachedShaderMaterial.SetShaderParameter("x_imag", julia.ConstantX.Imaginary);
+				_cachedShaderMaterial.SetShaderParameter("c_real", julia.ConstantX.Real);
+				_cachedShaderMaterial.SetShaderParameter("c_imag", julia.ConstantX.Imaginary);
 				_cachedShaderMaterial.SetShaderParameter("k_value", julia.ConstantK);
 			}
 
 			// Apply shader material to mesh
 			_displayMesh.SetSurfaceOverrideMaterial(0, _cachedShaderMaterial);
+
+			// Quick GPU win detection: perform a low-resolution CPU sampling
+			// across the rendered viewport to detect division-by-zero shown
+			// by the shader. This sets the fractal's DivisionByZeroOccurred
+			// flag so the rest of the game (win logic) can react.
+			if (_currentFractal != null)
+			{
+				// Reset the flag before sampling
+				_currentFractal.DivisionByZeroOccurred = false;
+
+				// Choose a sampling step to keep detection cheap but effective.
+				// For example, ~80x sampling across width yields reasonable coverage.
+				int sampleStep = Mathf.Max(1, TextureWidth / 80);
+				bool divisionByZeroFound = false;
+
+				for (int sy = 0; sy < TextureHeight && !divisionByZeroFound; sy += sampleStep)
+				{
+					for (int sx = 0; sx < TextureWidth; sx += sampleStep)
+					{
+						// Convert pixel to complex coordinate and run the fractal
+						// iteration check for division-by-zero. JuliaFractal will set
+						// DivisionByZeroOccurred when it detects a singularity.
+						var sampleComplex = _currentFractal.PixelToComplex(sx, sy);
+						_currentFractal.ComputeIterations(sampleComplex, out float smooth);
+
+						if (float.IsInfinity(smooth) || _currentFractal.DivisionByZeroOccurred)
+						{
+							_currentFractal.DivisionByZeroOccurred = true;
+							// Break out early when detected
+							divisionByZeroFound = true;
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -224,6 +259,10 @@ namespace FractalGenerator
 		/// </summary>
 		private Color GetColorFromIterations(int iterations, float smoothValue)
 		{
+			// Division by zero detected - return bright red (WIN condition!)
+			if (float.IsInfinity(smoothValue) || float.IsNaN(smoothValue))
+				return new Color(1f, 0f, 0f, 1f); // RED for division by zero
+			
 			if (iterations == _currentFractal.MaxIterations)
 				return new Color(0f, 0f, 0f, 1f); // Black for in-set
 
