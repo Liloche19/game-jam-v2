@@ -46,7 +46,7 @@ namespace FractalGenerator
 			_fractalRenderer.TextureWidth = 1600;
 			_fractalRenderer.TextureHeight = 1200;
 			// Prefer GPU rendering for responsiveness.
-			_fractalRenderer.UseGPURendering = false;
+			_fractalRenderer.UseGPURendering = true;
 			AddChild(_fractalRenderer);
 			GD.Print("FractalScene: FractalRenderer created");
 			

@@ -64,7 +64,7 @@ namespace FractalGenerator.UI
 			GD.Print("FractalUI: Creating title and labels...");
 
 			// Create title
-			Label titleLabel = new Label { Text = "Division by Zero Fractal" };
+			Label titleLabel = new Label { Text = "Fractal" };
 			titleLabel.AddThemeStyleboxOverride("normal", new StyleBoxEmpty());
 			titleLabel.LabelSettings = new LabelSettings();
 			titleLabel.LabelSettings.FontSize = 24;

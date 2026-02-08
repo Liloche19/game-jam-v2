@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bdxli2us6j1et" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Color.jpg" id="1_plaster_color"]
 [ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="2_player_scene"]
 [ext_resource type="Script" uid="uid://f3uwtbxkhdea" path="res://Rooms/Room3/Scripts/FractalScene.cs" id="3_fractal_scene_script"]
+[ext_resource type="ArrayMesh" uid="uid://p0ygiud07uvm" path="res://Ressources/Models/48-forklift/Forklift.obj" id="4_5uh4i"]
 
 [sub_resource type="StandardMaterial3D" id="Material_Floor"]
 albedo_color = Color(0.5, 0.5, 0.5, 1)
@@ -133,3 +134,7 @@ script = ExtResource("3_fractal_scene_script")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 omni_range = 100.0
 omni_attenuation = 0.0
+
+[node name="Forklift" type="MeshInstance3D" parent="." unique_id=1673874667]
+transform = Transform3D(0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, -4.0709095, 0.35627508, 4.213891)
+mesh = ExtResource("4_5uh4i")
