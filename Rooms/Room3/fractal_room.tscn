@@ -1,0 +1,135 @@
+[gd_scene format=3 uid="uid://c5wwqgfqdhkhg"]
+
+[ext_resource type="Texture2D" uid="uid://bdxli2us6j1et" path="res://Ressources/Textures/PaintedPlaster013/PaintedPlaster013_1K-JPG_Color.jpg" id="1_plaster_color"]
+[ext_resource type="PackedScene" uid="uid://fo1rdre0rrua" path="res://Player/player.tscn" id="2_player_scene"]
+[ext_resource type="Script" uid="uid://f3uwtbxkhdea" path="res://Rooms/Room3/Scripts/FractalScene.cs" id="3_fractal_scene_script"]
+
+[sub_resource type="StandardMaterial3D" id="Material_Floor"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v321d"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Floor"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="StandardMaterial3D" id="Material_Walls"]
+cull_mode = 2
+albedo_color = Color(0.8, 0.8, 0.8, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 4, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_North"]
+size = Vector3(10, 8, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_North"]
+size = Vector3(10, 8, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_South"]
+size = Vector3(10, 8, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_South"]
+size = Vector3(10, 8, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_East"]
+size = Vector3(0.5, 8, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_East"]
+size = Vector3(0.5, 8, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_West"]
+size = Vector3(0.5, 8, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_West"]
+size = Vector3(0.5, 8, 10)
+
+[sub_resource type="StandardMaterial3D" id="Material_Ceiling"]
+albedo_color = Color(0.9, 0.9, 0.9, 1)
+albedo_texture = ExtResource("1_plaster_color")
+uv1_scale = Vector3(2, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Ceiling"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Ceiling"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_FractalDisplay"]
+size = Vector2(8, 6)
+
+[node name="Room" type="Node3D" unique_id=2023136483]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1703681600]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1972692745]
+material_override = SubResource("Material_Floor")
+mesh = SubResource("BoxMesh_v321d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=470527480]
+shape = SubResource("BoxShape3D_Floor")
+
+[node name="NorthWall" type="StaticBody3D" parent="." unique_id=993280168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NorthWall" unique_id=363452228]
+material_override = SubResource("Material_Walls")
+mesh = SubResource("BoxMesh_North")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthWall" unique_id=1008796002]
+shape = SubResource("BoxShape3D_North")
+
+[node name="SouthWall" type="StaticBody3D" parent="." unique_id=1842893805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthWall" unique_id=983752211]
+material_override = SubResource("Material_Walls")
+mesh = SubResource("BoxMesh_South")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthWall" unique_id=2080166043]
+shape = SubResource("BoxShape3D_South")
+
+[node name="EastWall" type="StaticBody3D" parent="." unique_id=827482941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EastWall" unique_id=976425336]
+material_override = SubResource("Material_Walls")
+mesh = SubResource("BoxMesh_East")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EastWall" unique_id=1703495673]
+shape = SubResource("BoxShape3D_East")
+
+[node name="WestWall" type="StaticBody3D" parent="." unique_id=107820571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WestWall" unique_id=1287703690]
+material_override = SubResource("Material_Walls")
+mesh = SubResource("BoxMesh_West")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WestWall" unique_id=1531500204]
+shape = SubResource("BoxShape3D_West")
+
+[node name="Ceiling" type="StaticBody3D" parent="." unique_id=2076982776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling" unique_id=565837792]
+material_override = SubResource("Material_Ceiling")
+mesh = SubResource("BoxMesh_Ceiling")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling" unique_id=102503905]
+shape = SubResource("BoxShape3D_Ceiling")
+
+[node name="FractalDisplay" type="MeshInstance3D" parent="." unique_id=1849842791]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 4, -4.5)
+mesh = SubResource("PlaneMesh_FractalDisplay")
+
+[node name="FractalScene" type="Node3D" parent="." unique_id=1938475612]
+script = ExtResource("3_fractal_scene_script")
+
+[node name="Player" parent="." unique_id=1749856976 instance=ExtResource("2_player_scene")]
+
+[node name="Light3D" type="OmniLight3D" parent="." unique_id=1915962805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+omni_range = 100.0
+omni_attenuation = 0.0
